@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Family Reading Night — Bilingual Book Storefront</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
+    header { background:#fff; border-bottom:1px solid #e5e7eb; }
+    .wrap { max-width: 1050px; margin: 0 auto; padding: 18px; }
+    h1 { margin: 0 0 6px; font-size: 22px; }
+    p { margin: 6px 0; color:#444; }
+    .disclosure { font-size: 13px; color:#666; margin-top: 8px; }
+    .filters { display:grid; gap:10px; grid-template-columns: 2fr 1fr; margin-top: 12px; }
+    input, select { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px; }
+    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); margin-top: 16px; }
+    .card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+    .pair { display:inline-block; font-size:12px; background:#eef2ff; color:#3730a3; padding:4px 8px; border-radius:999px; margin-bottom:8px; }
+    .title { font-weight:800; margin:6px 0 4px; }
+    .meta { font-size:14px; color:#555; margin:0 0 8px; }
+    .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    a.btn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:700; font-size:14px; }
+    a.primary { background:#111; color:#fff; }
+    footer { text-align:center; padding:18px; color:#666; font-size: 13px; }
+    @media (max-width: 640px){ .filters { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <h1>Family Reading Night — Bilingual Book List</h1>
+    <p>Choose a language, find a book, and click <b>Buy on Amazon</b>.</p>
+    <p class="disclosure">
+      This website does not sell books or process payments. Buy buttons take you to Amazon.
+    </p>
+
+    <div class="filters">
+      <input id="search" placeholder="Search by title…" />
+      <select id="language"></select>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="grid" class="grid"></div>
+</main>
+
+<footer>© <span id="year"></span></footer>
+
+<script>
+  // Each book has a *pair* (or set) of languages
+  // The filter shows the book if the selected language is included in book.languages[].
+
+  const books = [
+    // Haitian Creole / English examples from your cart:
+    { title: "Bear About Town (Barefoot Bilinguals)", languages: ["Haitian Creole", "English"], isbn13: "9781739937706" },
+    { title: "I Took the Moon for a Walk (Barefoot Bilinguals)", languages: ["Haitian Creole", "English"], isbn13: "9798888597613" },
+    { title: "Not For Mimi / Pa Pou Mimi", languages: ["Haitian Creole", "English"], isbn13: "9798988863915" },
+    { title: "Mwen reve / I dream too", languages: ["Haitian Creole", "English"], isbn13: "9781626322301" },
+    { title: "Learn Haitian Creole For Kids (Bilingual)", languages: ["Haitian Creole", "English"], isbn13: "9798873981618" },
+    { title: "Lili, Mommy and Our House", languages: ["Haitian Creole", "English"], isbn13: "9798355883980" },
+    { title: "Lili, Tati, And The Zoo", languages: ["Haitian Creole", "English"], isbn13: "9798411903683" },
+    { title: "Lili, Grandma, and Legume", languages: ["Haitian Creole", "English"], isbn13: "9798778168954" },
+
+    // Arabic / English examples from your cart:
+    { title: "Jet the Cat (Is Not a Cat) (Barefoot Bilinguals)", languages: ["Arabic", "English"], isbn13: "9786140101630" },
+    { title: "The Rainbow Fish (English/Arabic) (Bi:libri)", languages: ["Arabic", "English"], isbn13: "9780735843721" },
+
+    // English / Spanish example from your cart:
+    { title: "The Rainbow Fish / El Pez Arcoíris (English/Spanish) (Bi:libri)", languages: ["Spanish", "English"], isbn13: "9780735843714" },
+
+    // English / French examples from your cart:
+    { title: "The Cat in the Hat (English/French) (Le Chat Au Chapeau)", languages: ["French", "English"], isbn13: "9780394801711" },
+    { title: "Amanda and the Lost Time (English/French)", languages: ["French", "English"], isbn13: "9781525953231" },
+
+    // Portuguese / English example from your cart:
+    { title: "Summer with Grandpa / Verão com o Avô (Portuguese/English)", languages: ["Portuguese", "English"], isbn13: "9781916395633" },
+  ];
+
+  function amazonLinkFromISBN(isbn13) {
+    return `https://www.amazon.com/s?k=${encodeURIComponent(isbn13)}`;
+  }
+
+  const languageSelect = document.getElementById("language");
+  const search = document.getElementById("search");
+  const grid = document.getElementById("grid");
+
+  function buildLanguageOptions() {
+    const allLangs = new Set();
+    books.forEach(b => b.languages.forEach(l => allLangs.add(l)));
+    const langs = ["All languages", ...Array.from(allLangs).sort((a,b)=>a.localeCompare(b))];
+
+    langs.forEach(l => {
+      const opt = document.createElement("option");
+      opt.value = l;
+      opt.textContent = l;
+      languageSelect.appendChild(opt);
+    });
+  }
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const lang = languageSelect.value;
+
+    const filtered = books.filter(b => {
+      const matchesLang = (lang === "All languages") || b.languages.includes(lang);
+      const hay = `${b.title} ${b.languages.join(" ")} ${b.isbn13}`.toLowerCase();
+      const matchesQ = !q || hay.includes(q);
+      return matchesLang && matchesQ;
+    });
+
+    grid.innerHTML = "";
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="card">No matches. Try a different search or language.</div>`;
+      return;
+    }
+
+    filtered.forEach(b => {
+      const pairLabel = b.languages.join(" + ");
+      const a = amazonLinkFromISBN(b.isbn13);
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="pair">${pairLabel}</div>
+        <div class="title">${b.title}</div>
+        <div class="meta">ISBN-13: ${b.isbn13}</div>
+        <div class="btnrow">
+          <a class="btn primary" href="${a}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  buildLanguageOptions();
+  search.addEventListener("input", render);
+  languageSelect.addEventListener("change", render);
+  render();
+</script>
+</body>
+</html>
