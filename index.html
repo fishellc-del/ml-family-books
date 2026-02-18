@@ -3,41 +3,67 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Family Reading Night — Bilingual Book Storefront</title>
+  <title>Family Reading Night — Multilingual Books</title>
   <style>
     body { font-family: system-ui, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
     header { background:#fff; border-bottom:1px solid #e5e7eb; }
-    .wrap { max-width: 1050px; margin: 0 auto; padding: 18px; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px; }
     h1 { margin: 0 0 6px; font-size: 22px; }
     p { margin: 6px 0; color:#444; }
-    .disclosure { font-size: 13px; color:#666; margin-top: 8px; }
-    .filters { display:grid; gap:10px; grid-template-columns: 2fr 1fr; margin-top: 12px; }
-    input, select { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px; }
-    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); margin-top: 16px; }
-    .card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
-    .pair { display:inline-block; font-size:12px; background:#eef2ff; color:#3730a3; padding:4px 8px; border-radius:999px; margin-bottom:8px; }
-    .title { font-weight:800; margin:6px 0 4px; }
-    .meta { font-size:14px; color:#555; margin:0 0 8px; }
-    .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-    a.btn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:700; font-size:14px; }
+    .small { font-size: 13px; color:#666; margin-top: 8px; }
+    .controls { display:grid; gap:12px; grid-template-columns: 1fr; margin-top: 14px; }
+    .searchrow { display:grid; gap:10px; grid-template-columns: 2fr 1fr; }
+    input { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px; }
+    .langbar { display:flex; flex-wrap: wrap; gap:10px; margin-top: 6px; }
+    button.langbtn {
+      border: 1px solid #111;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button.langbtn.active { background:#111; color:#fff; }
+    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 16px; }
+    .card { background:#fff; border:1px solid #e5e7eb; border-radius:18px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.05); display:flex; flex-direction:column; }
+    .cover {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      background: #f1f5f9;
+    }
+    .cardbody { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:8px; }
+    .pair { display:inline-block; font-size:12px; background:#eef2ff; color:#3730a3; padding:4px 8px; border-radius:999px; width: fit-content; }
+    .title { font-weight: 900; line-height: 1.2; }
+    .meta { font-size: 13px; color:#555; }
+    .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: 4px; }
+    a.btn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:800; font-size:14px; }
     a.primary { background:#111; color:#fff; }
+    .rtl { direction: rtl; text-align: right; }
     footer { text-align:center; padding:18px; color:#666; font-size: 13px; }
-    @media (max-width: 640px){ .filters { grid-template-columns: 1fr; } }
+    @media (max-width: 640px){
+      .searchrow { grid-template-columns: 1fr; }
+      button.langbtn { flex: 1 1 auto; }
+    }
   </style>
 </head>
 
 <body>
 <header>
   <div class="wrap">
-    <h1>Family Reading Night — Bilingual Book List</h1>
-    <p>Choose a language, find a book, and click <b>Buy on Amazon</b>.</p>
-    <p class="disclosure">
-      This website does not sell books or process payments. Buy buttons take you to Amazon.
-    </p>
+    <h1>Family Reading Night — Multilingual Book List</h1>
 
-    <div class="filters">
-      <input id="search" placeholder="Search by title…" />
-      <select id="language"></select>
+    <div id="instructions" class="instructions"></div>
+    <div class="small">This website does not sell books or process payments. “Buy” buttons open Amazon in a new tab.</div>
+
+    <div class="controls">
+      <div class="langbar" id="langbar"></div>
+
+      <div class="searchrow">
+        <input id="search" placeholder="Search by title or ISBN…" />
+        <input id="note" placeholder="(Optional) Notes for families (e.g., school pickup info) — you can delete this box" />
+      </div>
     </div>
   </div>
 </header>
@@ -49,62 +75,387 @@
 <footer>© <span id="year"></span></footer>
 
 <script>
-  // Each book has a *pair* (or set) of languages
-  // The filter shows the book if the selected language is included in book.languages[].
+  // ===== 1) TRANSLATED INSTRUCTIONS =====
+  const instructionsByLang = {
+    "All": {
+      html: `
+        <p><b>Choose a language button.</b> You’ll see books that include that language (including bilingual pairs).</p>
+        <p>Tap a book cover or click <b>Buy on Amazon</b> to purchase.</p>
+      `,
+      rtl: false
+    },
+    "English": {
+      html: `
+        <p><b>Choose your language.</b> You’ll see books that include that language (including bilingual pairs).</p>
+        <p>Tap a book cover or click <b>Buy on Amazon</b> to purchase.</p>
+      `,
+      rtl: false
+    },
+    "Spanish": {
+      html: `
+        <p><b>Elige tu idioma.</b> Verás libros que incluyen ese idioma (incluyendo libros bilingües).</p>
+        <p>Toca la portada o haz clic en <b>Comprar en Amazon</b> para comprar.</p>
+      `,
+      rtl: false
+    },
+    "Arabic": {
+      html: `
+        <p><b>اختر لغتك.</b> ستظهر لك كتب تحتوي على هذه اللغة (بما في ذلك الكتب ثنائية اللغة).</p>
+        <p>اضغط على الغلاف أو زر <b>الشراء من أمازون</b> للشراء.</p>
+      `,
+      rtl: true
+    },
+    "Haitian Creole": {
+      html: `
+        <p><b>Chwazi lang ou.</b> W ap wè liv ki gen lang sa a ladan (tankou liv bileng).</p>
+        <p>Touche kouvèti liv la oswa klike <b>Achte sou Amazon</b> pou achte.</p>
+      `,
+      rtl: false
+    },
+    "French": {
+      html: `
+        <p><b>Choisissez votre langue.</b> Vous verrez des livres qui incluent cette langue (y compris des livres bilingues).</p>
+        <p>Appuyez sur la couverture ou cliquez sur <b>Acheter sur Amazon</b> pour acheter.</p>
+      `,
+      rtl: false
+    },
+    "Portuguese": {
+      html: `
+        <p><b>Escolha seu idioma.</b> Você verá livros que incluem esse idioma (incluindo livros bilíngues).</p>
+        <p>Toque na capa ou clique em <b>Comprar na Amazon</b> para comprar.</p>
+      `,
+      rtl: false
+    }
+  };
 
+  // ===== 2) BOOK LIST (from your PDF) =====
+  // Covers are loaded by ISBN via Open Library (if a cover isn’t available, it will hide automatically).
   const books = [
-    // Haitian Creole / English examples from your cart:
-    { title: "Bear About Town (Barefoot Bilinguals)", languages: ["Haitian Creole", "English"], isbn13: "9781739937706" },
-    { title: "I Took the Moon for a Walk (Barefoot Bilinguals)", languages: ["Haitian Creole", "English"], isbn13: "9798888597613" },
-    { title: "Not For Mimi / Pa Pou Mimi", languages: ["Haitian Creole", "English"], isbn13: "9798988863915" },
-    { title: "Mwen reve / I dream too", languages: ["Haitian Creole", "English"], isbn13: "9781626322301" },
-    { title: "Learn Haitian Creole For Kids (Bilingual)", languages: ["Haitian Creole", "English"], isbn13: "9798873981618" },
-    { title: "Lili, Mommy and Our House", languages: ["Haitian Creole", "English"], isbn13: "9798355883980" },
-    { title: "Lili, Tati, And The Zoo", languages: ["Haitian Creole", "English"], isbn13: "9798411903683" },
-    { title: "Lili, Grandma, and Legume", languages: ["Haitian Creole", "English"], isbn13: "9798778168954" },
+  {
+    "title": "Bear About Town (Bilingual Haitian Creole & English) (Barefoot Bilinguals)",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798888594179",
+    "image": "https://covers.openlibrary.org/b/isbn/9798888594179-L.jpg"
+  },
+  {
+    "title": "The Mexiglish Girl / La Chica Mexiglish: Bilingual Children's book in English and",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9781739937706",
+    "image": "https://covers.openlibrary.org/b/isbn/9781739937706-L.jpg"
+  },
+  {
+    "title": "Un renacuajo / Diary of a Wimpy Kid (Diario Del Wimpy Kid) (Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644735046",
+    "image": "https://covers.openlibrary.org/b/isbn/9781644735046-L.jpg"
+  },
+  {
+    "title": "Seeds in a Dark Fruit Sky: Short Stories from Haiti",
+    "languages": [
+      "English"
+    ],
+    "isbn13": "9781733087308",
+    "image": "https://covers.openlibrary.org/b/isbn/9781733087308-L.jpg"
+  },
+  {
+    "title": "كيني",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140105164",
+    "image": "https://covers.openlibrary.org/b/isbn/9786140105164-L.jpg"
+  },
+  {
+    "title": "Sadiq Collection by Siman Nuurali 8 Books Collection Set - (Sadiq and the Pet",
+    "languages": [
+      "English"
+    ],
+    "isbn13": "9781398207196",
+    "image": "https://covers.openlibrary.org/b/isbn/9781398207196-L.jpg"
+  },
+  {
+    "title": "Jet the Cat (Is Not a Cat) (Bilingual Arabic & English) (Barefoot Bilinguals) (Arabic and",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9798888594360",
+    "image": "https://covers.openlibrary.org/b/isbn/9798888594360-L.jpg"
+  },
+  {
+    "title": "Diary Of A Wimpy Kid (Arabic Edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140101630",
+    "image": "https://covers.openlibrary.org/b/isbn/9786140101630-L.jpg"
+  },
+  {
+    "title": "Summer with Grandpa - يدﺟ ﻊﻣ فﯾﺻﻟا: A bilingual children's book in Arabic and",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9798396329348",
+    "image": "https://covers.openlibrary.org/b/isbn/9798396329348-L.jpg"
+  },
+  {
+    "title": "The Rainbow Fish/El Pez Arcoíris English/Spanish: (Bilingual Edition) (Bi:libri)",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9780735843714",
+    "image": "https://covers.openlibrary.org/b/isbn/9780735843714-L.jpg"
+  },
+  {
+    "title": "The Rainbow Fish English/Arabic: (Bilingual Edition) (Bi:libri) (Arabic Edition)",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9780735843721",
+    "image": "https://covers.openlibrary.org/b/isbn/9780735843721-L.jpg"
+  },
+  {
+    "title": "Nelly’s Box - ﻲﻠﻠﯾﻧ قودﻧﺻ: A bilingual children's book in Arabic and English",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9798846644175",
+    "image": "https://covers.openlibrary.org/b/isbn/9798846644175-L.jpg"
+  },
+  {
+    "title": "The Cat in the Hat in English and French (Le Chat Au Chapeau)",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "isbn13": "9780394801711",
+    "image": "https://covers.openlibrary.org/b/isbn/9780394801711-L.jpg"
+  },
+  {
+    "title": "Amanda and the Lost Time (English French Bilingual Book for Kids)",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "isbn13": "9781525953231",
+    "image": "https://covers.openlibrary.org/b/isbn/9781525953231-L.jpg"
+  },
+  {
+    "title": "Summer with Grandpa - Verão com o Avô: A Portuguese English bilingual children's book",
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "isbn13": "9798395782021",
+    "image": "https://covers.openlibrary.org/b/isbn/9798395782021-L.jpg"
+  },
+  {
+    "title": "Happy within/ Feliz por dentro: English - Brazilian Portuguese Bilingual edition",
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "isbn13": "9781916395633",
+    "image": "https://covers.openlibrary.org/b/isbn/9781916395633-L.jpg"
+  },
+  {
+    "title": "Nelly’s Box - A Caixa da Nelly: A bilingual children's book in Portuguese and English",
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "isbn13": "9798844533815",
+    "image": "https://covers.openlibrary.org/b/isbn/9798844533815-L.jpg"
+  },
+  {
+    "title": "Nelly’s Box - La boîte de Nelly: A bilingual children's book in French and English",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "isbn13": "9798844165948",
+    "image": "https://covers.openlibrary.org/b/isbn/9798844165948-L.jpg"
+  },
+  {
+    "title": "Nelly’s Box - La caja de Nelly: A bilingual children's book in Spanish and English",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9798844119545",
+    "image": "https://covers.openlibrary.org/b/isbn/9798844119545-L.jpg"
+  },
+  {
+    "title": "La ley de Rodrick / Rodrick Rules (Diario Del Wimpy Kid) (Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644735053",
+    "image": "https://covers.openlibrary.org/b/isbn/9781644735053-L.jpg"
+  },
+  {
+    "title": "In Search of the Secret Gate - En Busca de la Entrada Secreta: Bilingual Edition - English /",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9798378662968",
+    "image": "https://covers.openlibrary.org/b/isbn/9798378662968-L.jpg"
+  },
+  {
+    "title": "Summer with Grandpa - Verano con el abuelo: A Spanish English bilingual children's",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9798395381347",
+    "image": "https://covers.openlibrary.org/b/isbn/9798395381347-L.jpg"
+  },
+  {
+    "title": "The House on the Cliff: English-Spanish Dual Language Edition",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9798989403172",
+    "image": "https://covers.openlibrary.org/b/isbn/9798989403172-L.jpg"
+  },
+  {
+    "title": "The Tower Treasure: English-Spansh Dual Language Edition",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9798989403158",
+    "image": "https://covers.openlibrary.org/b/isbn/9798989403158-L.jpg"
+  },
+  {
+    "title": "I Took the Moon for a Walk (Bilingual Haitian Creole & English) (Barefoot Bilinguals)",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798888597613",
+    "image": "https://covers.openlibrary.org/b/isbn/9798888597613-L.jpg"
+  },
+  {
+    "title": "Not For Mimi/Pa Pou Mimi: A Fun Tale of a Curious & Playful Little Cat Written in English",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798988863915",
+    "image": "https://covers.openlibrary.org/b/isbn/9798988863915-L.jpg"
+  },
+  {
+    "title": "Mwen reve I dream too (Bilingual English-Haitian Creole) (Creole Edition)",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9781626322301",
+    "image": "https://covers.openlibrary.org/b/isbn/9781626322301-L.jpg"
+  },
+  {
+    "title": "Learn Haitian Creole For Kids: Bilingual Creole & English Language Learning Book",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798873981618",
+    "image": "https://covers.openlibrary.org/b/isbn/9798873981618-L.jpg"
+  },
+  {
+    "title": "Lili, Mommy and Our House: Haitian Creole Children’s Bilingual Book (Lili Speaks Haitian",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798355883980",
+    "image": "https://covers.openlibrary.org/b/isbn/9798355883980-L.jpg"
+  },
+  {
+    "title": "Lili, Tati, And The Zoo: A Haitian Creole Bilingual Book (Lili Speaks Haitian Creole)",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798411903683",
+    "image": "https://covers.openlibrary.org/b/isbn/9798411903683-L.jpg"
+  },
+  {
+    "title": "Lili, Grandma, and Legume: A Haitian Kreyol Bilingual Book (Lili Speaks Haitian Creole)",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9798778168954",
+    "image": "https://covers.openlibrary.org/b/isbn/9798778168954-L.jpg"
+  }
+];
 
-    // Arabic / English examples from your cart:
-    { title: "Jet the Cat (Is Not a Cat) (Barefoot Bilinguals)", languages: ["Arabic", "English"], isbn13: "9786140101630" },
-    { title: "The Rainbow Fish (English/Arabic) (Bi:libri)", languages: ["Arabic", "English"], isbn13: "9780735843721" },
+  // ===== 3) UI LOGIC =====
+  const languageButtons = ["All", "English", "Spanish", "Arabic", "Haitian Creole", "French", "Portuguese"];
 
-    // English / Spanish example from your cart:
-    { title: "The Rainbow Fish / El Pez Arcoíris (English/Spanish) (Bi:libri)", languages: ["Spanish", "English"], isbn13: "9780735843714" },
+  let selectedLang = "All";
 
-    // English / French examples from your cart:
-    { title: "The Cat in the Hat (English/French) (Le Chat Au Chapeau)", languages: ["French", "English"], isbn13: "9780394801711" },
-    { title: "Amanda and the Lost Time (English/French)", languages: ["French", "English"], isbn13: "9781525953231" },
-
-    // Portuguese / English example from your cart:
-    { title: "Summer with Grandpa / Verão com o Avô (Portuguese/English)", languages: ["Portuguese", "English"], isbn13: "9781916395633" },
-  ];
+  const langbar = document.getElementById("langbar");
+  const grid = document.getElementById("grid");
+  const search = document.getElementById("search");
+  const instructions = document.getElementById("instructions");
 
   function amazonLinkFromISBN(isbn13) {
+    // Reliable + simple: search by ISBN
     return `https://www.amazon.com/s?k=${encodeURIComponent(isbn13)}`;
   }
 
-  const languageSelect = document.getElementById("language");
-  const search = document.getElementById("search");
-  const grid = document.getElementById("grid");
+  function renderInstructions() {
+    const obj = instructionsByLang[selectedLang] || instructionsByLang["All"];
+    instructions.className = obj.rtl ? "rtl" : "";
+    instructions.innerHTML = obj.html;
+  }
 
-  function buildLanguageOptions() {
-    const allLangs = new Set();
-    books.forEach(b => b.languages.forEach(l => allLangs.add(l)));
-    const langs = ["All languages", ...Array.from(allLangs).sort((a,b)=>a.localeCompare(b))];
+  function buildButtons() {
+    langbar.innerHTML = "";
+    languageButtons.forEach(l => {
+      const btn = document.createElement("button");
+      btn.className = "langbtn" + (l === selectedLang ? " active" : "");
+      btn.type = "button";
+      btn.textContent =
+        l === "All" ? "All / Tout / Todo" :
+        l === "Spanish" ? "Español" :
+        l === "Arabic" ? "العربية" :
+        l === "Haitian Creole" ? "Kreyòl" :
+        l === "French" ? "Français" :
+        l === "Portuguese" ? "Português" : l;
 
-    langs.forEach(l => {
-      const opt = document.createElement("option");
-      opt.value = l;
-      opt.textContent = l;
-      languageSelect.appendChild(opt);
+      btn.addEventListener("click", () => {
+        selectedLang = l;
+        buildButtons();
+        renderInstructions();
+        render();
+      });
+      langbar.appendChild(btn);
     });
   }
 
   function render() {
     const q = search.value.trim().toLowerCase();
-    const lang = languageSelect.value;
 
     const filtered = books.filter(b => {
-      const matchesLang = (lang === "All languages") || b.languages.includes(lang);
+      const matchesLang = (selectedLang === "All") || b.languages.includes(selectedLang);
       const hay = `${b.title} ${b.languages.join(" ")} ${b.isbn13}`.toLowerCase();
       const matchesQ = !q || hay.includes(q);
       return matchesLang && matchesQ;
@@ -112,32 +463,50 @@
 
     grid.innerHTML = "";
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="card">No matches. Try a different search or language.</div>`;
+      grid.innerHTML = `<div class="card"><div class="cardbody">No matches. Try a different search or language.</div></div>`;
       return;
     }
 
     filtered.forEach(b => {
       const pairLabel = b.languages.join(" + ");
-      const a = amazonLinkFromISBN(b.isbn13);
+      const link = amazonLinkFromISBN(b.isbn13);
 
       const card = document.createElement("div");
       card.className = "card";
-      card.innerHTML = `
+
+      // Cover image: hide if it fails to load
+      const img = document.createElement("img");
+      img.className = "cover";
+      img.src = b.image;
+      img.alt = `Cover of ${b.title}`;
+      img.loading = "lazy";
+      img.onerror = () => { img.style.display = "none"; };
+
+      const body = document.createElement("div");
+      body.className = "cardbody";
+      body.innerHTML = `
         <div class="pair">${pairLabel}</div>
         <div class="title">${b.title}</div>
         <div class="meta">ISBN-13: ${b.isbn13}</div>
         <div class="btnrow">
-          <a class="btn primary" href="${a}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+          <a class="btn primary" href="${link}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </div>
       `;
+
+      // Make image clickable too
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => window.open(link, "_blank", "noopener,noreferrer"));
+
+      card.appendChild(img);
+      card.appendChild(body);
       grid.appendChild(card);
     });
   }
 
   document.getElementById("year").textContent = new Date().getFullYear();
-  buildLanguageOptions();
+  buildButtons();
+  renderInstructions();
   search.addEventListener("input", render);
-  languageSelect.addEventListener("change", render);
   render();
 </script>
 </body>
