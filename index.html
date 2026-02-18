@@ -14,8 +14,11 @@
     .controls { display:grid; gap:12px; grid-template-columns: 1fr; margin-top: 14px; }
     .searchrow { display:grid; gap:10px; grid-template-columns: 2fr 1fr; }
     input { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px; }
-    .langbar { display:flex; flex-wrap: wrap; gap:10px; margin-top: 6px; }
-    button.langbtn {
+
+    .barlabel { font-weight:800; font-size: 13px; color:#333; margin-top: 4px; }
+    .langbar, .agebar { display:flex; flex-wrap: wrap; gap:10px; margin-top: 6px; }
+
+    button.btn {
       border: 1px solid #111;
       background: #fff;
       padding: 10px 14px;
@@ -24,27 +27,25 @@
       font-size: 14px;
       cursor: pointer;
     }
-    button.langbtn.active { background:#111; color:#fff; }
+    button.btn.active { background:#111; color:#fff; }
+
     .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 16px; }
     .card { background:#fff; border:1px solid #e5e7eb; border-radius:18px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.05); display:flex; flex-direction:column; }
-    .cover {
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      background: #f1f5f9;
-    }
+    .cover { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: #f1f5f9; }
     .cardbody { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:8px; }
     .pair { display:inline-block; font-size:12px; background:#eef2ff; color:#3730a3; padding:4px 8px; border-radius:999px; width: fit-content; }
+    .agepill { display:inline-block; font-size:12px; background:#ecfeff; color:#155e75; padding:4px 8px; border-radius:999px; width: fit-content; }
     .title { font-weight: 900; line-height: 1.2; }
     .meta { font-size: 13px; color:#555; }
     .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: 4px; }
-    a.btn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:800; font-size:14px; }
+    a.linkbtn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:800; font-size:14px; }
     a.primary { background:#111; color:#fff; }
+
     .rtl { direction: rtl; text-align: right; }
     footer { text-align:center; padding:18px; color:#666; font-size: 13px; }
     @media (max-width: 640px){
       .searchrow { grid-template-columns: 1fr; }
-      button.langbtn { flex: 1 1 auto; }
+      button.btn { flex: 1 1 auto; }
     }
   </style>
 </head>
@@ -54,15 +55,23 @@
   <div class="wrap">
     <h1>Family Reading Night — Multilingual Book List</h1>
 
-    <div id="instructions" class="instructions"></div>
+    <div id="instructions"></div>
     <div class="small">This website does not sell books or process payments. “Buy” buttons open Amazon in a new tab.</div>
 
     <div class="controls">
-      <div class="langbar" id="langbar"></div>
+      <div>
+        <div class="barlabel">Language</div>
+        <div class="langbar" id="langbar"></div>
+      </div>
+
+      <div>
+        <div class="barlabel">Age</div>
+        <div class="agebar" id="agebar"></div>
+      </div>
 
       <div class="searchrow">
         <input id="search" placeholder="Search by title or ISBN…" />
-        <input id="note" placeholder="(Optional) Notes for families (e.g., school pickup info) — you can delete this box" />
+        <input id="note" placeholder="(Optional) Notes for families — you can delete this box" />
       </div>
     </div>
   </div>
@@ -75,164 +84,165 @@
 <footer>© <span id="year"></span></footer>
 
 <script>
-  // ===== 1) TRANSLATED INSTRUCTIONS =====
+  // ===== TRANSLATED INSTRUCTIONS (updates with language + mentions age filter) =====
   const instructionsByLang = {
     "All": {
       html: `
-        <p><b>Choose a language button.</b> You’ll see books that include that language (including bilingual pairs).</p>
+        <p><b>Choose a language</b> and <b>choose an age</b>. You’ll see books that match your selections (including bilingual pairs).</p>
         <p>Tap a book cover or click <b>Buy on Amazon</b> to purchase.</p>
       `,
       rtl: false
     },
     "English": {
       html: `
-        <p><b>Choose your language.</b> You’ll see books that include that language (including bilingual pairs).</p>
-        <p>Tap a book cover or click <b>Buy on Amazon</b> to purchase.</p>
+        <p><b>Choose your language</b> and <b>choose an age</b>. You’ll see books that match (including bilingual pairs).</p>
+        <p>Tap a cover or click <b>Buy on Amazon</b> to purchase.</p>
       `,
       rtl: false
     },
     "Spanish": {
       html: `
-        <p><b>Elige tu idioma.</b> Verás libros que incluyen ese idioma (incluyendo libros bilingües).</p>
+        <p><b>Elige tu idioma</b> y <b>elige una edad</b>. Verás libros que coinciden (incluyendo libros bilingües).</p>
         <p>Toca la portada o haz clic en <b>Comprar en Amazon</b> para comprar.</p>
       `,
       rtl: false
     },
     "Arabic": {
       html: `
-        <p><b>اختر لغتك.</b> ستظهر لك كتب تحتوي على هذه اللغة (بما في ذلك الكتب ثنائية اللغة).</p>
+        <p><b>اختر لغتك</b> و<b>اختر العمر</b>. ستظهر لك كتب مناسبة (بما في ذلك الكتب ثنائية اللغة).</p>
         <p>اضغط على الغلاف أو زر <b>الشراء من أمازون</b> للشراء.</p>
       `,
       rtl: true
     },
     "Haitian Creole": {
       html: `
-        <p><b>Chwazi lang ou.</b> W ap wè liv ki gen lang sa a ladan (tankou liv bileng).</p>
-        <p>Touche kouvèti liv la oswa klike <b>Achte sou Amazon</b> pou achte.</p>
+        <p><b>Chwazi lang ou</b> epi <b>chwazi laj</b>. W ap wè liv ki mache ak chwa w yo (tankou liv bileng).</p>
+        <p>Touche kouvèti a oswa klike <b>Achte sou Amazon</b> pou achte.</p>
       `,
       rtl: false
     },
     "French": {
       html: `
-        <p><b>Choisissez votre langue.</b> Vous verrez des livres qui incluent cette langue (y compris des livres bilingues).</p>
+        <p><b>Choisissez votre langue</b> et <b>choisissez l’âge</b>. Vous verrez des livres qui correspondent (y compris des livres bilingues).</p>
         <p>Appuyez sur la couverture ou cliquez sur <b>Acheter sur Amazon</b> pour acheter.</p>
       `,
       rtl: false
     },
     "Portuguese": {
       html: `
-        <p><b>Escolha seu idioma.</b> Você verá livros que incluem esse idioma (incluindo livros bilíngues).</p>
+        <p><b>Escolha seu idioma</b> e <b>escolha a idade</b>. Você verá livros que correspondem (incluindo livros bilíngues).</p>
         <p>Toque na capa ou clique em <b>Comprar na Amazon</b> para comprar.</p>
       `,
       rtl: false
     }
   };
 
-  // ===== 2) BOOK LIST (from your PDF) =====
-  // Covers are loaded by ISBN via Open Library (if a cover isn’t available, it will hide automatically).
+  // ===== BOOKS (from your spreadsheet) =====
+  // Each book has: title, languages[], isbn13, age ("0+","3+","7+","12+")
   const books = [
   {
-    "title": "Bear About Town (Bilingual Haitian Creole & English) (Barefoot Bilinguals)",
+    "title": "Bear About Town",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798888594179",
-    "image": "https://covers.openlibrary.org/b/isbn/9798888594179-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "The Mexiglish Girl / La Chica Mexiglish: Bilingual Children's book in English and",
+    "title": "The Mexiglish Girl/La Chica Mexiglish",
     "languages": [
       "English",
       "Spanish"
     ],
     "isbn13": "9781739937706",
-    "image": "https://covers.openlibrary.org/b/isbn/9781739937706-L.jpg"
+    "age": "0+"
   },
   {
-    "title": "Un renacuajo / Diary of a Wimpy Kid (Diario Del Wimpy Kid) (Spanish Edition)",
+    "title": "Diario Del Wimpy Kid",
     "languages": [
       "Spanish"
     ],
     "isbn13": "9781644735046",
-    "image": "https://covers.openlibrary.org/b/isbn/9781644735046-L.jpg"
+    "age": "7+"
   },
   {
     "title": "Seeds in a Dark Fruit Sky: Short Stories from Haiti",
     "languages": [
-      "English"
+      "English",
+      "Haitian Creole"
     ],
     "isbn13": "9781733087308",
-    "image": "https://covers.openlibrary.org/b/isbn/9781733087308-L.jpg"
+    "age": "0+"
   },
   {
-    "title": "كيني",
+    "title": "مذكرات طالب - قوانين االخ rules (Arabic Edition)",
     "languages": [
       "Arabic"
     ],
     "isbn13": "9786140105164",
-    "image": "https://covers.openlibrary.org/b/isbn/9786140105164-L.jpg"
+    "age": "0+"
   },
   {
-    "title": "Sadiq Collection by Siman Nuurali 8 Books Collection Set - (Sadiq and the Pet",
+    "title": "Sadiq Collection by Siman Nuurali 8 Books Collection Set - (Sadiq and the Pet Vet, Sadiq and the Green Thumbs, Sadiq and the Twin Trick, Sadiq and the Bridge Builders, Sadiq and the Desert Star, Sadiq and the Perfect Play, Sadiq and the Silver Shoe, Sadiq and the Stolen Story)",
     "languages": [
       "English"
     ],
     "isbn13": "9781398207196",
-    "image": "https://covers.openlibrary.org/b/isbn/9781398207196-L.jpg"
+    "age": "0+"
   },
   {
-    "title": "Jet the Cat (Is Not a Cat) (Bilingual Arabic & English) (Barefoot Bilinguals) (Arabic and",
+    "title": "Jet the Cat (Is Not a Cat)",
     "languages": [
       "Arabic",
       "English"
     ],
     "isbn13": "9798888594360",
-    "image": "https://covers.openlibrary.org/b/isbn/9798888594360-L.jpg"
+    "age": "0+"
   },
   {
-    "title": "Diary Of A Wimpy Kid (Arabic Edition)",
+    "title": "Diary Of A Wimpy Kid",
     "languages": [
       "Arabic"
     ],
     "isbn13": "9786140101630",
-    "image": "https://covers.openlibrary.org/b/isbn/9786140101630-L.jpg"
+    "age": "7+"
   },
   {
-    "title": "Summer with Grandpa - يدﺟ ﻊﻣ فﯾﺻﻟا: A bilingual children's book in Arabic and",
+    "title": "Summer with Grandpa - جدي مع الصيف",
     "languages": [
       "Arabic",
       "English"
     ],
     "isbn13": "9798396329348",
-    "image": "https://covers.openlibrary.org/b/isbn/9798396329348-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "The Rainbow Fish/El Pez Arcoíris English/Spanish: (Bilingual Edition) (Bi:libri)",
+    "title": "The Rainbow Fish/El Pez Arcoíris English/Spanish",
     "languages": [
       "English",
       "Spanish"
     ],
     "isbn13": "9780735843714",
-    "image": "https://covers.openlibrary.org/b/isbn/9780735843714-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "The Rainbow Fish English/Arabic: (Bilingual Edition) (Bi:libri) (Arabic Edition)",
+    "title": "The Rainbow Fish English/Arabic",
     "languages": [
       "Arabic",
       "English"
     ],
     "isbn13": "9780735843721",
-    "image": "https://covers.openlibrary.org/b/isbn/9780735843721-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Nelly’s Box - ﻲﻠﻠﯾﻧ قودﻧﺻ: A bilingual children's book in Arabic and English",
+    "title": "Nelly’s Box - نيللي صندوق",
     "languages": [
       "Arabic",
       "English"
     ],
     "isbn13": "9798846644175",
-    "image": "https://covers.openlibrary.org/b/isbn/9798846644175-L.jpg"
+    "age": "3+"
   },
   {
     "title": "The Cat in the Hat in English and French (Le Chat Au Chapeau)",
@@ -241,7 +251,7 @@
       "French"
     ],
     "isbn13": "9780394801711",
-    "image": "https://covers.openlibrary.org/b/isbn/9780394801711-L.jpg"
+    "age": "3+"
   },
   {
     "title": "Amanda and the Lost Time (English French Bilingual Book for Kids)",
@@ -250,16 +260,16 @@
       "French"
     ],
     "isbn13": "9781525953231",
-    "image": "https://covers.openlibrary.org/b/isbn/9781525953231-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Summer with Grandpa - Verão com o Avô: A Portuguese English bilingual children's book",
+    "title": "Summer with Grandpa - Ver\u00e3o com o Av\u00f4",
     "languages": [
       "English",
       "Portuguese"
     ],
     "isbn13": "9798395782021",
-    "image": "https://covers.openlibrary.org/b/isbn/9798395782021-L.jpg"
+    "age": "3+"
   },
   {
     "title": "Happy within/ Feliz por dentro: English - Brazilian Portuguese Bilingual edition",
@@ -268,34 +278,34 @@
       "Portuguese"
     ],
     "isbn13": "9781916395633",
-    "image": "https://covers.openlibrary.org/b/isbn/9781916395633-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Nelly’s Box - A Caixa da Nelly: A bilingual children's book in Portuguese and English",
+    "title": "Nelly\u2019s Box - A Caixa da Nelly",
     "languages": [
       "English",
       "Portuguese"
     ],
     "isbn13": "9798844533815",
-    "image": "https://covers.openlibrary.org/b/isbn/9798844533815-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Nelly’s Box - La boîte de Nelly: A bilingual children's book in French and English",
+    "title": "Nelly\u2019s Box - La bo\u00eete de Nelly",
     "languages": [
       "English",
       "French"
     ],
     "isbn13": "9798844165948",
-    "image": "https://covers.openlibrary.org/b/isbn/9798844165948-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Nelly’s Box - La caja de Nelly: A bilingual children's book in Spanish and English",
+    "title": "Nelly\u2019s Box - La caja de Nelly",
     "languages": [
       "English",
       "Spanish"
     ],
     "isbn13": "9798844119545",
-    "image": "https://covers.openlibrary.org/b/isbn/9798844119545-L.jpg"
+    "age": "3+"
   },
   {
     "title": "La ley de Rodrick / Rodrick Rules (Diario Del Wimpy Kid) (Spanish Edition)",
@@ -303,25 +313,25 @@
       "Spanish"
     ],
     "isbn13": "9781644735053",
-    "image": "https://covers.openlibrary.org/b/isbn/9781644735053-L.jpg"
+    "age": "7+"
   },
   {
-    "title": "In Search of the Secret Gate - En Busca de la Entrada Secreta: Bilingual Edition - English /",
+    "title": "In Search of the Secret Gate - En Busca de la Entrada Secreta: Bilingual Edition - English / Spanish",
     "languages": [
       "English",
       "Spanish"
     ],
     "isbn13": "9798378662968",
-    "image": "https://covers.openlibrary.org/b/isbn/9798378662968-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Summer with Grandpa - Verano con el abuelo: A Spanish English bilingual children's",
+    "title": "Summer with Grandpa - Verano con el abuelo",
     "languages": [
       "English",
       "Spanish"
     ],
     "isbn13": "9798395381347",
-    "image": "https://covers.openlibrary.org/b/isbn/9798395381347-L.jpg"
+    "age": "3+"
   },
   {
     "title": "The House on the Cliff: English-Spanish Dual Language Edition",
@@ -330,7 +340,7 @@
       "Spanish"
     ],
     "isbn13": "9798989403172",
-    "image": "https://covers.openlibrary.org/b/isbn/9798989403172-L.jpg"
+    "age": "7+"
   },
   {
     "title": "The Tower Treasure: English-Spansh Dual Language Edition",
@@ -339,86 +349,181 @@
       "Spanish"
     ],
     "isbn13": "9798989403158",
-    "image": "https://covers.openlibrary.org/b/isbn/9798989403158-L.jpg"
+    "age": "7+"
   },
   {
-    "title": "I Took the Moon for a Walk (Bilingual Haitian Creole & English) (Barefoot Bilinguals)",
+    "title": "I Took the Moon for a Walk",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798888597613",
-    "image": "https://covers.openlibrary.org/b/isbn/9798888597613-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Not For Mimi/Pa Pou Mimi: A Fun Tale of a Curious & Playful Little Cat Written in English",
+    "title": "Not For Mimi/Pa Pou Mimi",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798988863915",
-    "image": "https://covers.openlibrary.org/b/isbn/9798988863915-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Mwen reve I dream too (Bilingual English-Haitian Creole) (Creole Edition)",
+    "title": "Mwen reve I dream too",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9781626322301",
-    "image": "https://covers.openlibrary.org/b/isbn/9781626322301-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Learn Haitian Creole For Kids: Bilingual Creole & English Language Learning Book",
+    "title": "Learn Haitian Creole For Kids",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798873981618",
-    "image": "https://covers.openlibrary.org/b/isbn/9798873981618-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Lili, Mommy and Our House: Haitian Creole Children’s Bilingual Book (Lili Speaks Haitian",
+    "title": "Lili, Mommy and Our House",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798355883980",
-    "image": "https://covers.openlibrary.org/b/isbn/9798355883980-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Lili, Tati, And The Zoo: A Haitian Creole Bilingual Book (Lili Speaks Haitian Creole)",
+    "title": "Lili, Tati, And The Zoo",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798411903683",
-    "image": "https://covers.openlibrary.org/b/isbn/9798411903683-L.jpg"
+    "age": "3+"
   },
   {
-    "title": "Lili, Grandma, and Legume: A Haitian Kreyol Bilingual Book (Lili Speaks Haitian Creole)",
+    "title": "Lili, Grandma, and Legume",
     "languages": [
       "English",
       "Haitian Creole"
     ],
     "isbn13": "9798778168954",
-    "image": "https://covers.openlibrary.org/b/isbn/9798778168954-L.jpg"
+    "age": "3+"
+  },
+  {
+    "title": "Harry Potter y la piedra filosofal",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788478884452",
+    "age": "12+"
+  },
+  {
+    "title": "Percy Jackson y el ladr\u00f3n del rayo",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788498386264",
+    "age": "12+"
+  },
+  {
+    "title": "Los juegos del hambre",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788427202136",
+    "age": "12+"
+  },
+  {
+    "title": "Divergente",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788427201917",
+    "age": "12+"
+  },
+  {
+    "title": "El hobbit",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788445071994",
+    "age": "12+"
+  },
+  {
+    "title": "هاري بوتر وحجر الفيلسوف",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953891717",
+    "age": "12+"
+  },
+  {
+    "title": "بيرسي جاكسون وسارق البرق",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953895234",
+    "age": "12+"
+  },
+  {
+    "title": "ألعاب الجوع",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953896972",
+    "age": "12+"
+  },
+  {
+    "title": "سيد الخواتم: رفقة الخاتم",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953893032",
+    "age": "12+"
+  },
+  {
+    "title": "Dezafi",
+    "languages": [
+      "Haitian Creole"
+    ],
+    "isbn13": "9780913447624",
+    "age": "0+"
+  },
+  {
+    "title": "Ti Zwazo",
+    "languages": [
+      "Haitian Creole"
+    ],
+    "isbn13": "9789997013246",
+    "age": "0+"
   }
 ];
 
-  // ===== 3) UI LOGIC =====
+  // ===== FILTER STATE =====
   const languageButtons = ["All", "English", "Spanish", "Arabic", "Haitian Creole", "French", "Portuguese"];
+  const ageButtons = ["0+", "3+", "7+", "12+"];
 
   let selectedLang = "All";
+  let selectedAge = "12+"; // default: show all books (since book min age <= 12)
 
   const langbar = document.getElementById("langbar");
+  const agebar = document.getElementById("agebar");
   const grid = document.getElementById("grid");
   const search = document.getElementById("search");
   const instructions = document.getElementById("instructions");
 
+  function ageToNum(a){ return parseInt(String(a).replace("+",""), 10); }
+
   function amazonLinkFromISBN(isbn13) {
-    // Reliable + simple: search by ISBN
     return `https://www.amazon.com/s?k=${encodeURIComponent(isbn13)}`;
+  }
+  function coverFromISBN(isbn13) {
+    return `https://covers.openlibrary.org/b/isbn/${encodeURIComponent(isbn13)}-L.jpg`;
   }
 
   function renderInstructions() {
@@ -427,11 +532,11 @@
     instructions.innerHTML = obj.html;
   }
 
-  function buildButtons() {
+  function buildLanguageButtons() {
     langbar.innerHTML = "";
     languageButtons.forEach(l => {
       const btn = document.createElement("button");
-      btn.className = "langbtn" + (l === selectedLang ? " active" : "");
+      btn.className = "btn" + (l === selectedLang ? " active" : "");
       btn.type = "button";
       btn.textContent =
         l === "All" ? "All / Tout / Todo" :
@@ -443,7 +548,7 @@
 
       btn.addEventListener("click", () => {
         selectedLang = l;
-        buildButtons();
+        buildLanguageButtons();
         renderInstructions();
         render();
       });
@@ -451,51 +556,73 @@
     });
   }
 
+  function buildAgeButtons() {
+    agebar.innerHTML = "";
+    ageButtons.forEach(a => {
+      const btn = document.createElement("button");
+      btn.className = "btn" + (a === selectedAge ? " active" : "");
+      btn.type = "button";
+      btn.textContent = a;
+
+      btn.addEventListener("click", () => {
+        selectedAge = a;
+        buildAgeButtons();
+        render();
+      });
+      agebar.appendChild(btn);
+    });
+  }
+
   function render() {
     const q = search.value.trim().toLowerCase();
+    const selectedAgeNum = ageToNum(selectedAge);
 
     const filtered = books.filter(b => {
-      const matchesLang = (selectedLang === "All") || b.languages.includes(selectedLang);
-      const hay = `${b.title} ${b.languages.join(" ")} ${b.isbn13}`.toLowerCase();
+      const matchesLang = (selectedLang === "All") || (b.languages || []).includes(selectedLang);
+      const bookMin = ageToNum(b.age || "0+");
+
+      // Parent-friendly: if child is 7+, show 0+/3+/7+ but hide 12+
+      const matchesAge = bookMin <= selectedAgeNum;
+
+      const hay = `${b.title} ${(b.languages||[]).join(" ")} ${b.isbn13} ${b.age}`.toLowerCase();
       const matchesQ = !q || hay.includes(q);
-      return matchesLang && matchesQ;
+
+      return matchesLang && matchesAge && matchesQ;
     });
 
     grid.innerHTML = "";
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="card"><div class="cardbody">No matches. Try a different search or language.</div></div>`;
+      grid.innerHTML = `<div class="card"><div class="cardbody">No matches. Try a different search, language, or age.</div></div>`;
       return;
     }
 
     filtered.forEach(b => {
-      const pairLabel = b.languages.join(" + ");
+      const pairLabel = (b.languages || []).join(" + ");
       const link = amazonLinkFromISBN(b.isbn13);
 
       const card = document.createElement("div");
       card.className = "card";
 
-      // Cover image: hide if it fails to load
       const img = document.createElement("img");
       img.className = "cover";
-      img.src = b.image;
+      img.src = coverFromISBN(b.isbn13);
       img.alt = `Cover of ${b.title}`;
       img.loading = "lazy";
       img.onerror = () => { img.style.display = "none"; };
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => window.open(link, "_blank", "noopener,noreferrer"));
 
       const body = document.createElement("div");
       body.className = "cardbody";
       body.innerHTML = `
-        <div class="pair">${pairLabel}</div>
+        <div class="pair">${pairLabel || "Language"}</div>
+        <div class="agepill">Ages ${b.age || "0+"}</div>
         <div class="title">${b.title}</div>
         <div class="meta">ISBN-13: ${b.isbn13}</div>
         <div class="btnrow">
-          <a class="btn primary" href="${link}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+          <a class="linkbtn primary" href="${link}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </div>
       `;
-
-      // Make image clickable too
-      img.style.cursor = "pointer";
-      img.addEventListener("click", () => window.open(link, "_blank", "noopener,noreferrer"));
 
       card.appendChild(img);
       card.appendChild(body);
@@ -504,7 +631,8 @@
   }
 
   document.getElementById("year").textContent = new Date().getFullYear();
-  buildButtons();
+  buildLanguageButtons();
+  buildAgeButtons();
   renderInstructions();
   search.addEventListener("input", render);
   render();
