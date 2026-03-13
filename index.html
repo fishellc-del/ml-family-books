@@ -5,24 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Family Reading Night — Multilingual Books</title>
   <style>
-    body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f6f7f9; color: #111; }
-    header { background: white; border-bottom: 1px solid #e5e7eb; }
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
+    header { background:#fff; border-bottom:1px solid #e5e7eb; }
     .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
     h1 { margin: 0 0 6px; font-size: 26px; }
-    p { margin: 6px 0; color: #444; }
-    .small { font-size: 13px; color: #666; margin-top: 8px; }
-    .controls { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 16px; }
-    .searchrow { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    p { margin: 6px 0; color:#444; }
+    .small { font-size: 13px; color:#666; margin-top: 8px; }
+    .controls { display:grid; gap:14px; grid-template-columns: 1fr; margin-top: 16px; }
+    .searchrow { display:grid; gap:10px; grid-template-columns: 1fr; }
     input {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      font-size: 14px;
-      box-sizing: border-box;
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px;
+      box-sizing:border-box;
     }
-    .barlabel { font-weight: 800; font-size: 13px; color: #333; margin-top: 4px; }
-    .langbar, .agebar, .shopbar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .barlabel { font-weight:800; font-size: 13px; color:#333; margin-top: 4px; }
+    .langbar, .agebar, .shopbar { display:flex; flex-wrap: wrap; gap:10px; margin-top: 8px; }
     button.btn, a.shopbtn {
       border: 1px solid #111;
       background: #fff;
@@ -31,70 +27,49 @@
       font-weight: 800;
       font-size: 14px;
       cursor: pointer;
-      text-decoration: none;
-      color: #111;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      text-decoration:none;
+      color:#111;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
-    button.btn.active { background: #111; color: #fff; }
-    .grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      margin-top: 18px;
-    }
+    button.btn.active { background:#111; color:#fff; }
+    .grid { display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 18px; }
     .card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 1px 3px rgba(0,0,0,.06);
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
     }
     .cover {
-      width: 100%;
+      width:100%;
       aspect-ratio: 3 / 4;
       object-fit: cover;
-      background: #eef2f7;
-      display: block;
+      background:#eef2f7;
+      display:block;
     }
-    .cardbody { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .tagrow { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cardbody { padding:14px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .tagrow { display:flex; flex-wrap:wrap; gap:8px; }
     .pair, .agepill {
-      display: inline-block;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      width: fit-content;
+      display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; width: fit-content;
     }
-    .pair { background: #eef2ff; color: #3730a3; }
-    .agepill { background: #ecfeff; color: #155e75; }
+    .pair { background:#eef2ff; color:#3730a3; }
+    .agepill { background:#ecfeff; color:#155e75; }
     .title { font-weight: 900; line-height: 1.2; font-size: 18px; }
-    .desc { font-size: 14px; color: #374151; line-height: 1.45; }
-    .meta { font-size: 13px; color: #555; }
-    .btnrow { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+    .desc { font-size:14px; color:#374151; line-height:1.45; }
+    .meta { font-size: 13px; color:#555; }
+    .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: auto; padding-top: 6px; }
     a.linkbtn {
-      text-decoration: none;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #111;
-      font-weight: 800;
-      font-size: 14px;
+      text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:800; font-size:14px;
     }
-    a.primary { background: #111; color: #fff; }
+    a.primary { background:#111; color:#fff; }
     .rtl { direction: rtl; text-align: right; }
-    .loading, .error {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 20px;
-      margin-top: 18px;
-    }
-    footer { text-align: center; padding: 20px; color: #666; font-size: 13px; }
-    @media (max-width: 640px) {
+    footer { text-align:center; padding:20px; color:#666; font-size: 13px; }
+    @media (max-width: 640px){
       button.btn, a.shopbtn { flex: 1 1 auto; }
     }
   </style>
@@ -134,17 +109,12 @@
 </header>
 
 <main class="wrap">
-  <div id="status"></div>
   <div id="grid" class="grid"></div>
 </main>
 
 <footer>© <span id="year"></span></footer>
 
 <script>
-  // Replace gid if your book list is on a different tab.
-  const SHEET_CSV_URL =
-    "https://docs.google.com/spreadsheets/d/1Y4S5TxloXEW_rhp3eT5Qe-3gSaXXEKb2XMB3q8bS27w/export?format=csv&gid=0";
-
   const instructionsByLang = {
     "All": {
       html: `
@@ -197,6 +167,1944 @@
     }
   };
 
+  const books = [
+  {
+    "title": "Bear About Town",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798888594179",
+    "buyUrl": "https://www.amazon.com/s?k=9798888594179",
+    "agesText": "Ages 2-6",
+    "minAge": 2,
+    "maxAge": 6,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Mexiglish Girl/ La Chica Mexiglish",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9781739937706",
+    "buyUrl": "https://www.amazon.com/The-Mexiglish-Girl-Spanish-Childrens/dp/1739937708",
+    "agesText": "Ages 3-11",
+    "minAge": 3,
+    "maxAge": 11,
+    "description": "A joyful story about being bilingual and proud of speaking more than one language.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Un renacuajo / Diary of a Wimpy Kid (Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644735046",
+    "buyUrl": "https://www.amazon.com/Rainbow-Fish-Bi-libri-Spanish/dp/0735843716/ref=sr_1_2?crid=3LKETKGZOFERM&dib=eyJ2IjoiMSJ9.FlzhagoeF0DEjTXd0u8na42qNRxx8MOAFnBbfBGFoSxKy6b3ORK4oNKymNUW34LEvkLOSYD8ecGZtMi2lXyJVcrm4bxV2p9AfH28aluK9AAhLCtB26AxgCDJFKVPLlJi-55_jWyfvoonv_NzFuVi3DfNv5ONBAtggO1T8XbXItUP3px4FE-rRHONh5Io1-kkCJfBNxCBgRXRvVQiEmnB3N8Qu1eZesmZsWKHkSEi5K4.0H8ltKi3QjpB21yr1zHhQE8Xr12NpRcHR_i-C3kbhVU&dib_tag=se&keywords=The+Rainbow+Fish%2FEl+Pez+Arco%C3%ADris+English%2FSpanish&qid=1771424979&sprefix=the+rainbow+fish%2Fel+pez+arco%C3%ADris+english%2Fspanish%2Caps%2C181&sr=8-2",
+    "agesText": "Ages 4-8",
+    "minAge": 4,
+    "maxAge": 8,
+    "description": "A humorous school-and-family story told through the eyes of a kid trying to survive growing up.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Rainbow Fish/El Pez Arcoíris",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9780735843714",
+    "buyUrl": "https://www.amazon.com/Rainbow-Fish-Bi-libri-Spanish/dp/0735843716/ref=sr_1_2?crid=3LKETKGZOFERM&dib=eyJ2IjoiMSJ9.FlzhagoeF0DEjTXd0u8na42qNRxx8MOAFnBbfBGFoSxKy6b3ORK4oNKymNUW34LEvkLOSYD8ecGZtMi2lXyJVcrm4bxV2p9AfH28aluK9AAhLCtB26AxgCDJFKVPLlJi-55_jWyfvoonv_NzFuVi3DfNv5ONBAtggO1T8XbXItUP3px4FE-rRHONh5Io1-kkCJfBNxCBgRXRvVQiEmnB3N8Qu1eZesmZsWKHkSEi5K4.0H8ltKi3QjpB21yr1zHhQE8Xr12NpRcHR_i-C3kbhVU&dib_tag=se&keywords=The+Rainbow+Fish%2FEl+Pez+Arco%C3%ADris+English%2FSpanish&qid=1771424979&sprefix=the+rainbow+fish%2Fel+pez+arco%C3%ADris+english%2Fspanish%2Caps%2C181&sr=8-2",
+    "agesText": "Ages 4-8",
+    "minAge": 4,
+    "maxAge": 8,
+    "description": "A gentle story about friendship and learning that sharing with others brings joy.",
+    "coverUrl": ""
+  },
+  {
+    "title": "El Pez Arcoíris",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780735845725",
+    "buyUrl": "https://www.amazon.com/El-Pez-Arco%C3%ADris-Spanish-Rainbow/dp/0735845727/ref=sr_1_1_sspa?crid=3LKETKGZOFERM&dib=eyJ2IjoiMSJ9.FlzhagoeF0DEjTXd0u8na42qNRxx8MOAFnBbfBGFoSxKy6b3ORK4oNKymNUW34LEvkLOSYD8ecGZtMi2lXyJVcrm4bxV2p9AfH28aluK9AAhLCtB26AxgCDJFKVPLlJi-55_jWyfvoonv_NzFuVi3DfNv5ONBAtggO1T8XbXItUP3px4FE-rRHONh5Io1-kkCJfBNxCBgRXRvVQiEmnB3N8Qu1eZesmZsWKHkSEi5K4.0H8ltKi3QjpB21yr1zHhQE8Xr12NpRcHR_i-C3kbhVU&dib_tag=se&keywords=The+Rainbow+Fish%2FEl+Pez+Arco%C3%ADris+English%2FSpanish&qid=1771424979&sprefix=the+rainbow+fish%2Fel+pez+arco%C3%ADris+english%2Fspanish%2Caps%2C181&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
+    "agesText": "Ages 4-8",
+    "minAge": 4,
+    "maxAge": 8,
+    "description": "A gentle story about friendship and learning that sharing with others brings joy.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Rainbow Fish English/Arabic",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9780735843721",
+    "buyUrl": "https://www.amazon.com/Rainbow-Fish-Bi-Arabic-North-South/dp/0735843724/ref=sr_1_1?crid=1LR2ATIDFO0I&dib=eyJ2IjoiMSJ9.6Sd8sFMDMQmN5RTm5YNAlhjGTZD-6Y93fWKhjk8aYmx_HGLI8eZOtVaJY8wDnFwT.AWKKpO7WXPilM9mhHH_fp9xh455zMR6G3N24L4EGbZQ&dib_tag=se&keywords=The+Rainbow+Fish+English%2FArabic%3A&qid=1771425118&sprefix=the+rainbow+fish+english%2Farabic+%2Caps%2C181&sr=8-1",
+    "agesText": "Ages 4-8",
+    "minAge": 4,
+    "maxAge": 8,
+    "description": "A gentle story about friendship and learning that sharing with others brings joy.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My First English-Arabic Learning Library",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9789354404900",
+    "buyUrl": "https://www.amazon.com/dp/9354404901/ref=mes-dp?_encoding=UTF8&pd_rd_w=JyXgO&content-id=amzn1.sym.476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_p=476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_r=89D044ZJKHF9BV3MKTHM&pd_rd_wg=6UKBW&pd_rd_r=6ce063fa-3ef9-4bf3-a746-9bd09e161979",
+    "agesText": "Ages 0-3",
+    "minAge": 0,
+    "maxAge": 3,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Nelly’s Box - صندوق نيللي",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9798846644175",
+    "buyUrl": "https://www.amazon.com/Nellys-Box-bilingual-childrens-Creativity/dp/B0B9PNNQ9T/ref=sr_1_1?crid=EQ52YMTIUI59&dib=eyJ2IjoiMSJ9.CC_1tAzI5dtOSxfyq5roog.zHzasKaiDLxyZ7tcWdWOIfLuix5jT3upZ_rFp0b-_K0&dib_tag=se&keywords=Nelly%E2%80%99s+Box+-+%D9%86%D9%8A%D9%84%D9%84%D9%8A+%D8%B5%D9%86%D8%AF%D9%88%D9%82%3A&qid=1771425251&s=books&sprefix=nelly+s+box+-+%D9%86%D9%8A%D9%84%D9%84%D9%8A+%D8%B5%D9%86%D8%AF%D9%88%D9%82+%2Cstripbooks%2C176&sr=1-1",
+    "agesText": "Ages 5-12",
+    "minAge": 5,
+    "maxAge": 12,
+    "description": "A warm family story about curiosity, feelings, and the surprises that can come from a special box.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Cat in the Hat",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9780394801711",
+    "buyUrl": "https://www.amazon.com/Cat-English-French-Chat-Chapeau/dp/0394801717/ref=sr_1_1?crid=6OQL5MMRBDST&dib=eyJ2IjoiMSJ9.aKjq8Nrf5nEM773Pc_3KopcNSuRgdS-EOd6hZboKbhrOlvCxjlQIWWxxJ1hNXzPjnVMMbIxNCWtyBpQ1vvYSHsAaFJsfXmK5KQdowaoFCCaz69zDf0CwCwARUMKi-kBEEB1H9eNS7_m54HU9he2kxO6FgoMgUKhmsqHUmp22Y6Qc6906ORNO_48HW0nRTt4_xJOjvPYBws7pG6N16EmpU7UhB2NnbIHWNkiU7mXpAAo.XPeZgvE16myruSDTtfe4na-QGT0X9USVPBtkEzuL45M&dib_tag=se&keywords=The+Cat+in+the+Hat+in+English+and+French&nsdOptOutParam=true&qid=1771428460&s=books&sprefix=the+cat+in+the+hat+in+english+and+french%2Cstripbooks%2C234&sr=1-1",
+    "agesText": "Ages 2-8",
+    "minAge": 2,
+    "maxAge": 8,
+    "description": "A playful rhyming story where an unexpected visitor turns an ordinary day into a wild adventure.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Amanda and the Lost Time",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9781525953231",
+    "buyUrl": "https://www.amazon.com/Amanda-English-French-Bilingual-Collection/dp/1525953249/ref=sr_1_1?crid=1W9ATM4RQYP1Q&dib=eyJ2IjoiMSJ9.rR7poJrv_KtNnBxooK36hOS7B9sOqzwn_EOF6eQdXbzcxGJ8crlH-t456UygPxCa_ztCqOHwre0Dg--OgnRL-K3Pew1T4laTHxuvQskEqvk.2doRVZDKalYRgLqq7awRxmoOAAO37iD083Zeb8OLWjY&dib_tag=se&keywords=Amanda+and+the+Lost+Time+%28English+French+Bilingual+Book+for+Kids&nsdOptOutParam=true&qid=1771428553&s=books&sprefix=amanda+and+the+lost+time+english+french+bilingual+book+for+kids%2Cstripbooks%2C194&sr=1",
+    "agesText": "Ages 6-12",
+    "minAge": 6,
+    "maxAge": 12,
+    "description": "A French-language title that gives readers a chance to enjoy story while building language confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Summer with Grandpa - Verão com o Avô",
+    "languages": [
+      "Portuguese",
+      "English"
+    ],
+    "isbn13": "9798395782021",
+    "buyUrl": "https://www.amazon.com/Summer-Grandpa-Portuguese-bilingual-childrens/dp/B0C6BQ5F75/ref=sr_1_1?crid=3KXL361TYZYCW&dib=eyJ2IjoiMSJ9.vzoULgUbEOY_Gq2zqcwGxA.UfnZ2ODua1VxGxIb-1-fFCLOYLA_g5gVjuO-guh7pP0&dib_tag=se&keywords=Summer+with+Grandpa+-+Ver%C3%A3o+com+o+Av%C3%B4&nsdOptOutParam=true&qid=1771428613&s=books&sprefix=summer+with+grandpa+-+ver%C3%A3o+com+o+av%C3%B4%2Cstripbooks%2C171&sr=1-1",
+    "agesText": "Ages 5-12",
+    "minAge": 5,
+    "maxAge": 12,
+    "description": "A tender family story about spending meaningful time with a grandparent and making memories together.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Happy within/ Feliz por dentro",
+    "languages": [
+      "Portuguese",
+      "English"
+    ],
+    "isbn13": "9781916395633",
+    "buyUrl": "https://www.amazon.com/s?k=Summer+with+Grandpa+-+Ver%C3%A3o+com+o+Av%C3%B4&i=stripbooks&crid=3KXL361TYZYCW&sprefix=summer+with+grandpa+-+ver%C3%A3o+com+o+av%C3%B4%2Cstripbooks%2C171&ref=nb_sb_noss",
+    "agesText": "Ages 0-11",
+    "minAge": 0,
+    "maxAge": 11,
+    "description": "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Nelly’s Box - A Caixa da Nelly",
+    "languages": [
+      "Portuguese",
+      "English"
+    ],
+    "isbn13": "9798844533815",
+    "buyUrl": "https://www.amazon.com/Nellys-Box-bilingual-childrens-Portuguese/dp/B0B8RCFNX4/ref=sr_1_1?crid=2J0H0BXL11P8D&dib=eyJ2IjoiMSJ9.9KYLK6Y8Hqs2jtzUAsydU7CQFnCfvrDURN0iAvRXBvLGjHj071QN20LucGBJIEps._spowtQitpRUSlBspvbrtPQd1CHmlLczEkz7SfhzpgQ&dib_tag=se&keywords=Nelly%E2%80%99s+Box+-+A+Caixa+da+Nelly&qid=1771428729&s=books&sprefix=nelly+s+box+-+a+caixa+da+nelly%2Cstripbooks%2C159&sr=1-1",
+    "agesText": "Ages 5+",
+    "minAge": 5,
+    "maxAge": 99,
+    "description": "A warm family story about curiosity, feelings, and the surprises that can come from a special box.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Nelly’s Box - La boîte de Nelly",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9798844165948",
+    "buyUrl": "https://www.amazon.com/Nellys-Box-bilingual-childrens-Creativity/dp/B0B8VCDV1D/ref=sr_1_1?crid=224WNXNCBFOZP&dib=eyJ2IjoiMSJ9.985givDCK1Axc42NHjXOp6aYQ3TtraijQL14cMdA9gWdo-F7kDA9SUFbtFwzTSXw.a9fQMj_78tUVh-0xPcLGRsU2slydU0O-ma2WEXHjhIU&dib_tag=se&keywords=Nelly%E2%80%99s+Box+-+La+bo%C3%AEte+de+Nelly&qid=1771428789&s=books&sprefix=nelly+s+box+-+la+bo%C3%AEte+de+nelly%2Cstripbooks%2C162&sr=1-1",
+    "agesText": "Ages 5+",
+    "minAge": 5,
+    "maxAge": 99,
+    "description": "A warm family story about curiosity, feelings, and the surprises that can come from a special box.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Nelly’s Box - La caja de Nelly",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9798844119545",
+    "buyUrl": "https://www.amazon.com/Nellys-Box-bilingual-childrens-Creativity/dp/B0B8RCBW1X/ref=sr_1_1?crid=I5Z2H8ORL2DC&dib=eyJ2IjoiMSJ9.IbKrVZURf62WK1G0Od1NWyZglfwB0hz1nMoVSZl06LHo8qv0rZ8xjTGWgAvlyjav7dRjjeqtmQv3v7LII3DZJ-M0cnsrkocgt6bQ_6QVAvTyh545c1kgw69IC7x5AhcgSNab_CafCUMLq7bDTj0JQU00R9boNbBks1OaQbFAEOTq-3q5EWXBJfstvp-akhtSfNU_kAFKnh2hMrfx2-ey0xq2p5zepaf3NDkTCGpUIJU._dj2ajAnBN9ze47KRLWVzumfi9Cw86QOKl6E6oAf1P8&dib_tag=se&keywords=Nelly%E2%80%99s+Box+-+La+caja+de+Nelly&qid=1771428835&s=books&sprefix=nelly+s+box+-+la+caja+de+nelly%2Cstripbooks%2C173&sr=1-1",
+    "agesText": "Ages 5+",
+    "minAge": 5,
+    "maxAge": 99,
+    "description": "A warm family story about curiosity, feelings, and the surprises that can come from a special box.",
+    "coverUrl": ""
+  },
+  {
+    "title": "La ley de Rodrick (Diario Del Wimpy Kid)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644735053",
+    "buyUrl": "https://www.amazon.com/Rodrick-Rules-Diario-Wimpy-Spanish/dp/1644735059/ref=sr_1_1?crid=3UGGSCCA9XAYM&dib=eyJ2IjoiMSJ9.hJZQ71Q3H0qbJTCAD2c7DRJTgcx7rKkaEeE82GKt0Z60TQGjuWXi3ZFqxEHcjMMZV4j9RTxCtQUB3uBN9-Afv8p9hUkKqtAvFN-bmyn7ab0bN0sEyM42BDOJQrnRVu9lJALezBZ1v4flo0Mch56Q_w.V3nOxP8rq2NqdD-YtZ0EUdR8oxPF8hZmPwZRmev64pI&dib_tag=se&keywords=La+ley+de+Rodrick+%2F+Rodrick+Rules+%28Diario+Del+Wimpy+Kid%29+%28Spanish+Edition%29&nsdOptOutParam=true&qid=1771428896&s=books&sprefix=la+ley+de+rodrick+%2F+rodrick+rules+diario+del+wimpy+kid+spanish+edition+%2Cstripbooks%2C141&sr=1-1",
+    "agesText": "Ages 7+",
+    "minAge": 7,
+    "maxAge": 99,
+    "description": "A humorous school-and-family story told through the eyes of a kid trying to survive growing up.",
+    "coverUrl": ""
+  },
+  {
+    "title": "In Search of the Secret Gate - En Busca de la Entrada Secreta",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9798378662968",
+    "buyUrl": "https://www.amazon.com/Search-Secret-Gate-Bilingual-Biling%C3%BCe/dp/B0BW2K4DSM/ref=sr_1_1?crid=37MMBAUUOWYM9&dib=eyJ2IjoiMSJ9.aBX_sIvxsym6xBz3d0DhOA.8sJJpWyac2LoM9L5nczORKsim9EgO_YbRroABIZ0mu8&dib_tag=se&keywords=In+Search+of+the+Secret+Gate+-+En+Busca+de+la+Entrada+Secreta&nsdOptOutParam=true&qid=1771429028&s=books&sprefix=in+search+of+the+secret+gate+-+en+busca+de+la+entrada+secreta%2Cstripbooks%2C158&sr=1-1",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A mystery adventure filled with clues, suspense, and problem-solving.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Murder on the Links: English - Spanish",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9781963622300",
+    "buyUrl": "https://www.amazon.com/dp/1963622308/ref=sspa_dk_hqp_detail_aax_0?psc=1&sp_csd=d2lkZ2V0TmFtZT1zcF9ocXBfc2hhcmVk",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A mystery adventure filled with clues, suspense, and problem-solving.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Summer with Grandpa - Verano con el abuelo",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9798395381347",
+    "buyUrl": "https://www.amazon.com/-/es/Elisavet-Arkolaki-ebook/dp/B0C5VFVPT8",
+    "agesText": "Ages 5-12",
+    "minAge": 5,
+    "maxAge": 12,
+    "description": "A tender family story about spending meaningful time with a grandparent and making memories together.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The House on the Cliff: English-Spanish",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9798989403172",
+    "buyUrl": "https://www.amazon.com/House-Cliff-English-Spanish-Dual-Language/dp/B0CQCTXNX6/ref=sr_1_1?crid=1SSJLZL89RXAP&dib=eyJ2IjoiMSJ9.l0gWOxKY-MWVkZ5HNV4yJSJltAbGJ1MDicJWcsBBW087-s4fOIi5oiSyQWy2G6hmU1rp1zUpQAUFSbsKrjEpduYam7hUgGo9-NETSrFLF__1meWkwzs3-qCxBi8y21RBTIMtGKtrq1STg6ebEJ-3Gu-FKDBLg9sSta60jcxdbIExuVj-o3EB4DcC2ip1lf3BCImG9Wu59k_q59jL7kAiX3LzPZxEFjqCc4WE8YoY-mA.6Zd7PAFHrJv-GZmhEwEdISgtTRG2Mh7FzyWYH4J4VJQ&dib_tag=se&keywords=The+House+on+the+Cliff%3A+English-Spanish+Dual+Language+Edition&nsdOptOutParam=true&qid=1771429216&s=digital-text&sprefix=the+house+on+the+cliff+english-spanish+dual+language+edition%2Cdigital-text%2C148&sr=1-1",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A mystery adventure filled with clues, suspense, and problem-solving.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Tower Treasure: English-Spansh",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9798989403158",
+    "buyUrl": "https://www.amazon.com/Tower-Treasure-English-Spansh-Dual-Language/dp/B0CNS3N8N9/ref=pd_bxgy_d_sccl_1/141-0526374-4654358?pd_rd_w=MvnCo&content-id=amzn1.sym.dcf559c6-d374-405e-a13e-133e852d81e1&pf_rd_p=dcf559c6-d374-405e-a13e-133e852d81e1&pf_rd_r=JJSN245EWQY2F1Q4XHD0&pd_rd_wg=3biva&pd_rd_r=991ac475-f246-44a5-9980-0b7150c29ad8&pd_rd_i=B0CNS3N8N9&psc=1",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A mystery adventure filled with clues, suspense, and problem-solving.",
+    "coverUrl": ""
+  },
+  {
+    "title": "I Took the Moon for a Walk",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798888597613",
+    "buyUrl": "https://www.amazon.com/Bilingual-Haitian-English-Barefoot-Bilinguals/dp/B0F5M9N1XJ/ref=sr_1_2?crid=BDRD3MHRT1PJ&dib=eyJ2IjoiMSJ9.wB0u5dCqWKuMBhoe-fIon1ot12lauYAJ5AyQ5a7yd8RtJMCXRcRGM_xjCZm9MkFBsHq5qeYPmLra8xFqlUdEarj2j7j8h60yuIz2Sya_gGNWGo6hT5m4wKnktFqYcQgj0MYJkLDMg800ig__1EsFQUYIxSIUmRHvHgDy2gUtZpnoarxYflnRSWwKOhEfS3qiP_8Djra9tMGDoeQGxXmIGBLfm4YGv-uJrCVj4FEnR8w.25DU__nwMR4JzzdUv8M6Sl1MKcGmseiWGQnB3mqaULI&dib_tag=se&keywords=I+Took+the+Moon+for+a+Walk&qid=1771429346&s=books&sprefix=i+took+the+moon+for+a+walk%2Cstripbooks%2C185&sr=1",
+    "agesText": "Ages 1-7",
+    "minAge": 1,
+    "maxAge": 7,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Not For Mimi/Pa Pou Mimi",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798988863915",
+    "buyUrl": "https://www.amazon.com/Not-Mimi-Pa-Pou-Curious/dp/B0CHKY19M7/ref=sr_1_1?crid=1VP0H774G8JXW&dib=eyJ2IjoiMSJ9.qLYQ8LWB7LmwySaJluB7JFo5n0YTPT_tNoF9ntrlBX4.aWFq7KKJDmaJ94tVA_fniayP9troMHyHZt6T9KzPlxg&dib_tag=se&keywords=Not+For+Mimi%2FPa+Pou+Mimi&qid=1771429406&s=books&sprefix=not+for+mimi%2Fpa+pou+mimi%2Cstripbooks%2C160&sr=1-1",
+    "agesText": "Ages 2-6",
+    "minAge": 2,
+    "maxAge": 6,
+    "description": "A fun story about a curious little cat learning what is and is not meant for her.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Mwen reve I dream too",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9781626322301",
+    "buyUrl": "https://www.amazon.com/Mwen-dream-Bilingual-English-Haitian-Creole/dp/1626322309/ref=sr_1_1?crid=3UNREZEBL2LSL&dib=eyJ2IjoiMSJ9.2vFQc0Z8opCAHClEkk5EA7H76jNgv0WO3_TbGb9HGS0.Pjs9kXQgAGSvRs8VTQPj4MjJY6DXCfti9F3U41ie8Ns&dib_tag=se&keywords=Mwen+reve+I+dream+too&qid=1771429472&s=books&sprefix=mwen+reve+i+dream+too%2Cstripbooks%2C185&sr=1-1",
+    "agesText": "Ages 3+",
+    "minAge": 3,
+    "maxAge": 99,
+    "description": "An encouraging story that invites children to dream big and believe in their future.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Learn Haitian Creole For Kids",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798873981618",
+    "buyUrl": "https://www.amazon.com/Learn-Haitian-Creole-Kids-Bilingual/dp/B0CRM9KPLR/ref=sr_1_1_sspa?crid=28OEUCYM782KE&dib=eyJ2IjoiMSJ9.feHhUbNWfyL90K3yOVy-_AOCttVgkGxlQBNz4-sQzHl52RiCuVfPHHI9SpyREt_HxrTbsXq8zuOZFVS7PquOTCVqvdMttAv1hPsgfVV1kuzTJ7w5yHluWdXEgF9ZQQisNUFN2NrvydkaTW2phD6qH39NfzL8uKx3KFqKhtE2ueM9cOInV8EU_OY2xQhM8L6r_sDwtkiWq9bNMvNm--gptFnT-3WjLv6dZ_4iaW9dTYg.eW2vn6SsNkuKkNqWGTukNhmC2ZycckA4QA7jXNw8_VM&dib_tag=se&keywords=Learn+Haitian+Creole+For+Kids&qid=1771429532&s=books&sprefix=learn+haitian+creole+for+kids%2Cstripbooks%2C212&sr=1-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
+    "agesText": "Ages 0+",
+    "minAge": 0,
+    "maxAge": 99,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Lili, Mommy and Our House",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798355883980",
+    "buyUrl": "https://www.amazon.com/Lili-Mommy-Our-House-Childrens/dp/B0BGNKSZ7D/ref=sr_1_1?crid=2DUBNW2YSLRT7&dib=eyJ2IjoiMSJ9.CCdMHTdSE32dtDLoBervJSvexaIS-O-buU3B6Jwpm00.EWGEhiYmlBVVmSWHuSbsFpXeY3x7wdI5eHKtB7k3YTk&dib_tag=se&keywords=Lili%2C+Mommy+and+Our+House&qid=1771429596&s=books&sprefix=lili%2C+mommy+and+our+house%2Cstripbooks%2C207&sr=1-1",
+    "agesText": "Ages 3+",
+    "minAge": 3,
+    "maxAge": 99,
+    "description": "A simple bilingual family story following Lili through everyday experiences and new discoveries.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Lili, Tati, And The Zoo",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798411903683",
+    "buyUrl": "https://www.amazon.com/Lili-Tati-Zoo-Haitian-Bilingual/dp/B09RV25KPQ",
+    "agesText": "Ages 3+",
+    "minAge": 3,
+    "maxAge": 99,
+    "description": "A simple bilingual family story following Lili through everyday experiences and new discoveries.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Lili, Grandma, and Legume",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9798778168954",
+    "buyUrl": "https://www.amazon.com/Lili-Grandma-Legume-Haitian-Bilingual/dp/B09MZXWNGJ/ref=sr_1_1?crid=3FQG2X9ERQDOW&dib=eyJ2IjoiMSJ9.YjQxswcmX3i-uYsZkj36zg.aOVqGFS93MendzwNqxDOq4mndznbSmITpUBt-sx47i0&dib_tag=se&keywords=Lili%2C+Grandma%2C+and+Legume&qid=1771429916&s=books&sprefix=lili%2C+grandma%2C+and+legume%2Cstripbooks%2C160&sr=1-1",
+    "agesText": "Ages 3+",
+    "minAge": 3,
+    "maxAge": 99,
+    "description": "A simple bilingual family story following Lili through everyday experiences and new discoveries.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Harry Potter y la piedra filosofal",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644732076",
+    "buyUrl": "https://www.amazon.com/Harry-Potter-piedra-filosofal-Sorcerers-Spanish/dp/1644732076/ref=sr_1_1?dib=eyJ2IjoiMSJ9.Wk-mHd_IlX-Gx6ft9EVcfnoMOPZXLlYNR-gOBIt5fZSknKOqbuq3ZCXM5sx58NiI1yeFEfW4k0N_CRsfSocmfs_yeRCM9nVWSc6iQH97urre1tN_marRpbluRxKmVGaCbA9kAd2wdNUEtd2EIruJcAByjtVKzXc7QrcHgtv4fNyCNCSzljRMHqitRChTBN0PSUpE4CIJ-Svom6O7o3EOatUjw3C5dbF_dQOTdz2tdss.b2nG7LjjvTMnU28RZ_p7ZzoMT3VUlJczAL3dCN0RSBM&dib_tag=se&keywords=harry+potter+spanish&qid=1771434793&sr=8-1",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A young wizard discovers a hidden world of magic, friendship, and danger on his first big adventure.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Telaraña de Carlota: Charlotte's Web (Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780060757403",
+    "buyUrl": "https://www.amazon.com/dp/006075740X/ref=mes-dp?_encoding=UTF8&pd_rd_w=SRYLW&content-id=amzn1.sym.476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_p=476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_r=11VKMW3MBE4E3SPDED9N&pd_rd_wg=1Muiz&pd_rd_r=b684a7dc-a635-4d69-bdfa-01a52e307598",
+    "agesText": "Ages 7+",
+    "minAge": 7,
+    "maxAge": 99,
+    "description": "A heartfelt animal story about friendship, loyalty, and caring for others.",
+    "coverUrl": ""
+  },
+  {
+    "title": "هاري بوتر وحجر الفيلسوف",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789771418818",
+    "buyUrl": "https://www.amazon.com/%D9%87%D8%A7%D8%B1%D9%8A-%D8%A8%D9%88%D8%AA%D8%B1-%D9%88%D8%AD%D8%AC%D8%B1-%D8%A7%D9%84%D9%81%D9%8A%D9%84%D8%B3%D9%88%D9%81-Potter/dp/9771418815/ref=sr_1_1?crid=1MYLJISZ0W5MB&dib=eyJ2IjoiMSJ9.nnYLycMUkkLf4R2PXHUQl433aFt_xDDDXTyMJnq1UQzWm6JvT5gNwql-QjUGWJSeR2e2WH8MQl8Lfq4Ihz2uIcL-agoxOUyuTfzb3HVBOdt3AoatVUsxzUChG7XP6NR3MKQejcMrw4VouWFuRSjNyqRZY53idiNCMbp7qsSQCZbOvSAk_t7xY-w_krMkhyFVskCdfGCYMKqh0jMDozSJ5V-GLG_u7wiQdxbkJJ-Hks4.rZDqmV9y1LhiYFQvT-9Lk_HO7nOmk7GF5mxqy-QZkYU&dib_tag=se&keywords=harry+potter+arabic&qid=1771435024&s=books&sprefix=harry+potter+arabic%2Cstripbooks%2C181&sr=1-1",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A young wizard discovers a hidden world of magic, friendship, and danger on his first big adventure.",
+    "coverUrl": ""
+  },
+  {
+    "title": "سليلة الدخان والعظام",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9781961420335",
+    "buyUrl": "https://jarirbooksusa.com/84323.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A fantasy story filled with mystery, danger, and a heroine discovering hidden truths.",
+    "coverUrl": ""
+  },
+  {
+    "title": "حروب القطط في",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140119376",
+    "buyUrl": "https://jarirbooksusa.com/84291.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "An action-filled fantasy adventure about loyalty, survival, and conflict.",
+    "coverUrl": ""
+  },
+  {
+    "title": "متى نعود؟",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786144424124",
+    "buyUrl": "https://jarirbooksusa.com/42427.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A reflective story about identity, home, and family belonging.",
+    "coverUrl": ""
+  },
+  {
+    "title": "الراعي حمدان",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786144424155",
+    "buyUrl": "https://jarirbooksusa.com/71285.html",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A story rooted in culture and character, following a young person through challenge and growth.",
+    "coverUrl": ""
+  },
+  {
+    "title": "أنشودة الطيور المغردة والثعابين",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140129030",
+    "buyUrl": "https://jarirbooksusa.com/74478.html",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A high-stakes dystopian story about survival, courage, and standing up against injustice.",
+    "coverUrl": ""
+  },
+  {
+    "title": "السنة اللهب",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140102118",
+    "buyUrl": "https://www.jarirbooksusa.com/16044.html",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A high-stakes dystopian story about survival, courage, and standing up against injustice.",
+    "coverUrl": ""
+  },
+  {
+    "title": "ثلاثية الجامحة",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140116276",
+    "buyUrl": "https://jarirbooksusa.com/74489.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A futuristic adventure about identity, choices, and bravery in a divided society.",
+    "coverUrl": ""
+  },
+  {
+    "title": "الباهرة",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953266435",
+    "buyUrl": "https://jarirbooksusa.com/42873.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A dramatic story about power, identity, and difficult choices.",
+    "coverUrl": ""
+  },
+  {
+    "title": "مذكرات طالب. القشّة الاخيرة",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140112773",
+    "buyUrl": "https://jarirbooksusa.com/42729.html",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "Another funny diary-style adventure following school, family, and growing-up problems.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Kounouz Int'l Best Seller: East of Eden",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9789953553108",
+    "buyUrl": "https://jarirbooksusa.com/70722.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A dual-language classic that gives older readers access to a well-known literary story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Kounouz Int'l Best Seller: Robinson Crusoe",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9786144330432",
+    "buyUrl": "https://jarirbooksusa.com/45013.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A dual-language classic that gives older readers access to a well-known literary story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "World Best Sellers: Of Mice & Men (Dual En-Ar)",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "23119680",
+    "buyUrl": "https://jarirbooksusa.com/84491.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A dual-language classic that gives older readers access to a well-known literary story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "World Best Sellers: The Strange Case of Dr.Jekyll and Mr. Hyde (Dual En-Ar)",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9953343381",
+    "buyUrl": "https://jarirbooksusa.com/41530.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A dual-language classic that gives older readers access to a well-known literary story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "La Oruga Muy Hambrienta (The Very Hungry Caterpillar Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780399239601",
+    "buyUrl": "https://www.amazon.com/oruga-muy-hambrienta-Spanish-board/dp/039923960X/ref=sr_1_4_sspa?crid=7DRTOFIFB0S9&dib=eyJ2IjoiMSJ9.OhVu3rozJvSzJlrYUgf2GCkFmRPig4Zutnr3f-XKhxoOmpFp4w1pGYA_sa-MM138v0gZoaiiVRUAZ03tOdEF4wxsCjgQZa2fE_29eOVV3ZtlNhyjkxfSTVD9YGVSAqgENxFS-DkYOznSZf6_DQSV_ZMt9r2ZOm-GF6reEAhDPGU7lPxeMl2SW9oR1UOCQWf2Ti_yckp4qbBiODjZ6NFGRQbSLgGTSMgrp0kwhSar8n5pqh1YxiFKM67csx3QaL22RKVW3TmjK1j-cZ25IeKp-VADDte9HBaTq-v9DpqZNtM.yKQKeY8HiQOg8l-XgZ9CiOedMVHhVFF3mQw_8XaKdis&dib_tag=se&keywords=books+in+spanish&qid=1773415278&sprefix=books+in+spanish%2Caps%2C193&sr=8-4-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
+    "agesText": "Ages 0+",
+    "minAge": 0,
+    "maxAge": 99,
+    "description": "A classic early-reader story about growth, counting, and transformation.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Te Amo hasta la Luna y las Estrellas",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781664350908",
+    "buyUrl": "https://www.amazon.com/hasta-Luna-Estrellas-Love-Spanish/dp/166435090X/ref=pd_sbs_d_sccl_2_2/141-0526374-4654358?pd_rd_w=BQIfB&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=BJH9J86VGRE1MNW5WS7E&pd_rd_wg=AXsGr&pd_rd_r=9c50b317-2881-4f21-b8ec-3349721d1fec&pd_rd_i=166435090X&psc=1",
+    "agesText": "Ages 0+",
+    "minAge": 0,
+    "maxAge": 99,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "365 cuentos y rimas para la hora de dormir",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781680528718",
+    "buyUrl": "https://www.amazon.com/cuentos-dormir-Rhymes-Bedtime-Spanish/dp/1680528718/ref=pd_sbs_d_sccl_2_2/141-0526374-4654358?pd_rd_w=zlOZ7&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=AMXC2F2P3DJHJ3G5BY2R&pd_rd_wg=PSM9e&pd_rd_r=ba89f3db-8ecd-4888-813b-72fc0df6ad67&pd_rd_i=1680528718&psc=1",
+    "agesText": "Ages 0+",
+    "minAge": 0,
+    "maxAge": 99,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Estuche Los juegos del hambre (Contiene: Los juegos del hambre / En llamas / Sinsajo / Balada de pájaros cantores y serpientes)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9791387652388",
+    "buyUrl": "https://www.amazon.com/Estuche-Los-juegos-hambre-Contiene/dp/B0FK36FFS9/ref=sr_1_2?crid=1I84OJMVK5DVZ&dib=eyJ2IjoiMSJ9._RxQ9RkilUzI55iwVrEJObEHbDu_-zJEz3YaB9q3dIWItwkPVUHBMOPFXO9Kzv9P7ODTqEh3imrvp_iBGKfZl_WCg0tq9SMMLG0F9npqQzMoZIlqjfgJH2FEkB33BsK24OjHuWCayzOIePubUGaooYV1XxKo23LtK1ziVdP4XRhEUnrYDlq7uY-1TeviUyJhLn21QVvmsM68wip3XCzTbMJlpf1KUHK5PFJbE8LPWYo.SRcmSSEg4uk2_fgc_CadTYtBWKDz4gjga5uflMUpZYA&dib_tag=se&keywords=hunger+games+spanish&qid=1773415456&s=books&sprefix=hunger+games+panish%2Cstripbooks%2C168&sr=1-2",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A high-stakes dystopian story about survival, courage, and standing up against injustice.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Divergente 1",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788413141879",
+    "buyUrl": "https://www.amazon.com/Divergente-1-Veronica-Roth/dp/8413141877/ref=sr_1_5?crid=18MQVRE5SX8D7&dib=eyJ2IjoiMSJ9.oua610LUnliXb-El0YMSk1q97Bx4JOZb4_sR2mBEObbqkeZO8h0uvbJ4d8h-xIYxL_kKE-TMn2XmQJkaZg29kVWepNOhs9CFAuMMmeBCYa1jA0hINf_XW0FS-1L2rRkWSuMFBSpTzrHy0ESJevj8VVwC9VcZqG0MJ49CSGrWDskBuMfaed0E7izthB7sjU7qmiAjIDBZLxxOIqXweG6pHL8Yuqz-IWy3I_Yeeyf9er4VREn9vXmt7QW96I_3bW09s_XkEyMQNMrgFdzP1Mqqz3VRkXO-SEhYMyO9vpRQizU.EJllMRWB0fIgOLwyiVYOm35AkKCq1u1LkGMlYsmUAJQ&dib_tag=se&keywords=teen+books+in+spanish&qid=1773415590&refinements=p_n_feature_browse-bin%3A2656022011&rnid=618072011&s=books&sprefix=teen+books+in+spanish%2Cstripbooks%2C183&sr=1-5",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A futuristic adventure about identity, choices, and bravery in a divided society.",
+    "coverUrl": ""
+  },
+  {
+    "title": "El dador: The Giver (Spanish Edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780358354741",
+    "buyUrl": "https://www.amazon.com/dp/0358354749/ref=mes-dp?_encoding=UTF8&pd_rd_w=IBA9c&content-id=amzn1.sym.476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_p=476b1b7d-c787-4147-8a3c-fdef209103a1&pf_rd_r=3YV6EW0B40YFXZDPV9YG&pd_rd_wg=FG3W0&pd_rd_r=33fcc8b8-67fb-4127-bb73-2b03465db20d",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A thought-provoking story about memory, freedom, and what makes a meaningful life.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Yo no soy tu perfecta hija mexicana",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780525564324",
+    "buyUrl": "https://www.amazon.com/soy-perfecta-hija-mexicana-Spanish/dp/0525564322/ref=pd_sbs_d_sccl_2_1/141-0526374-4654358?pd_rd_w=OWIrq&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=8X9CN2JRQH8197VECBGJ&pd_rd_wg=xMWLP&pd_rd_r=18e93ab0-9015-480a-b009-9b8dc1dafa7e&pd_rd_i=0525564322&psc=1",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A coming-of-age story about grief, family expectations, and finding your own voice.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Solito",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781644736593",
+    "buyUrl": "https://www.amazon.com/Solito-Spanish-Javier-Zamora/dp/1644736594/ref=pd_sbs_d_sccl_1_2/141-0526374-4654358?pd_rd_w=3ssYe&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=A0ZP73PXHHZX7P5R5FDN&pd_rd_wg=6A76U&pd_rd_r=bdb1d7cf-738c-4cf3-8a4f-46f8ff0eb4d8&pd_rd_i=1644736594&psc=1",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A moving story about migration, courage, and the search for safety and belonging.",
+    "coverUrl": ""
+  },
+  {
+    "title": "No somos de aquí",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786073831895",
+    "buyUrl": "https://www.amazon.com/No-somos-aqu%C3%AD-Spanish/dp/6073831893",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Mariposa",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781250803245",
+    "buyUrl": "https://www.amazon.com/Mariposa-Spanish-Yamile-Saied-M%C3%A9ndez/dp/1250803249",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Reina del grito",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780063223769",
+    "buyUrl": "https://www.amazon.com/Reina-del-grito-Spanish-Daughter/dp/0063223767",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Las ventajas de ser invisible",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786077353607",
+    "buyUrl": "https://www.amazon.com/Ventajas-ser-invisible-Spanish-Edition/dp/6077353600",
+    "agesText": "Ages 14+",
+    "minAge": 14,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "El principito",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780156013987",
+    "buyUrl": "https://www.amazon.com/El-Principito-Spanish-Antoine-Saint-Exup%C3%A9ry/dp/0156013983",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Don Quijote de la Mancha (Adaptación juvenil)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788467585476",
+    "buyUrl": "https://www.amazon.com/Don-Quijote-Mancha-Adaptaci%C3%B3n-juvenil/dp/8467585475",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Percy Jackson y el ladrón del rayo",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788498386264",
+    "buyUrl": "https://www.amazon.com/Percy-Jackson-ladr%C3%B3n-rayo-Spanish/dp/8498386267",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A fast-paced fantasy adventure where a young hero discovers secrets about his identity and the gods.",
+    "coverUrl": ""
+  },
+  {
+    "title": "El Hobbit",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788445000659",
+    "buyUrl": "https://www.amazon.com/Hobbit-Spanish-J-R-R-Tolkien/dp/8445000658",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A fantasy quest full of unlikely courage, dangerous journeys, and unforgettable characters.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Peter Pan (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788497946391",
+    "buyUrl": "https://www.amazon.com/Peter-Pan-Spanish-Edition/dp/8497946390",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "La invención de Hugo Cabret",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788467545388",
+    "buyUrl": "https://www.amazon.com/invenci%C3%B3n-Hugo-Cabret-Spanish/dp/8467545384",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Refugee (Spanish edition: Refugiado)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788469659984",
+    "buyUrl": "https://www.amazon.com/Refugiado-Spanish-Alan-Gratz/dp/8469659980",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Watchmaker of Filigree Street (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140127517",
+    "buyUrl": "https://jarirbooksusa.com/80480.html",
+    "agesText": "Ages 14+",
+    "minAge": 14,
+    "maxAge": 99,
+    "description": "A reflective novel about time, choices, and the lives shaped by them.",
+    "coverUrl": ""
+  },
+  {
+    "title": "We Are Not from Here (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140128613",
+    "buyUrl": "https://jarirbooksusa.com/81542.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Giver (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140126442",
+    "buyUrl": "https://jarirbooksusa.com/79877.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A thought-provoking story about memory, freedom, and what makes a meaningful life.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Charlotte's Web (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140120679",
+    "buyUrl": "https://jarirbooksusa.com/75219.html",
+    "agesText": "Ages 7+",
+    "minAge": 7,
+    "maxAge": 99,
+    "description": "A heartfelt animal story about friendship, loyalty, and caring for others.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Harry Potter and the Chamber of Secrets (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789771454298",
+    "buyUrl": "https://jarirbooksusa.com/84553.html",
+    "agesText": "Ages 9+",
+    "minAge": 9,
+    "maxAge": 99,
+    "description": "A young wizard discovers a hidden world of magic, friendship, and danger on his first big adventure.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Diary of a Wimpy Kid: Dog Days (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140122932",
+    "buyUrl": "https://jarirbooksusa.com/76685.html",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A humorous school-and-family story told through the eyes of a kid trying to survive growing up.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Little Prince (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953890161",
+    "buyUrl": "https://jarirbooksusa.com/41254.html",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Palestine: My Homeland (Arabic)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953895456",
+    "buyUrl": "https://jarirbooksusa.com/53153.html",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A reflective story about identity, home, and family belonging.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Ramadan Around the World (Arabic)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140128842",
+    "buyUrl": "https://jarirbooksusa.com/81607.html",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A faith-centered book that introduces traditions, celebration, and reflection.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Tales from the Arabian Nights (Arabic)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9789953897412",
+    "buyUrl": "https://jarirbooksusa.com/55242.html",
+    "agesText": "Ages 10+",
+    "minAge": 10,
+    "maxAge": 99,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My Colors in Arabic and English",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781739995201",
+    "buyUrl": "https://www.amazon.com/My-Colors-Arabic-English-Bilingual/dp/1739995201",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My Numbers in Arabic and English",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781739995218",
+    "buyUrl": "https://www.amazon.com/My-Numbers-Arabic-English-Bilingual/dp/173999521X",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Friendly Elephant / فيل ودود",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781914447082",
+    "buyUrl": "https://www.amazon.com/Friendly-Elephant-English-Arabic-Bilingual/dp/1914447085",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Hip, Hop / هيا نقفز",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781914447044",
+    "buyUrl": "https://www.amazon.com/Hip-Hop-English-Arabic-Bilingual/dp/1914447042",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Be Sure to Say Please / من فضلك قل",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781914447006",
+    "buyUrl": "https://www.amazon.com/Be-Sure-Say-Please-Arabic/dp/191444700X",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Goodnight Arabic",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9781563161469",
+    "buyUrl": "https://www.amazon.com/Goodnight-Arabic-English-Arabic-Bilingual/dp/1563161469",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Dezafi",
+    "languages": [
+      "Haitian Creole"
+    ],
+    "isbn13": "9780913447624",
+    "buyUrl": "https://www.amazon.com/Dezafi-Frank%C3%A9tienne/dp/0913447623",
+    "agesText": "Ages 15+",
+    "minAge": 15,
+    "maxAge": 99,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Ti Zwazo",
+    "languages": [
+      "Haitian Creole"
+    ],
+    "isbn13": "9789997013246",
+    "buyUrl": "https://www.amazon.com/Ti-Zwazo/dp/9997013243",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Very Hungry Caterpillar / La Oruga Muy Hambrienta (Bilingual Board Book)",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9780399256059",
+    "buyUrl": "https://www.amazon.com/Very-Hungry-Caterpillar-Bilingual-Board/dp/0399256059",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A classic early-reader story about growth, counting, and transformation.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Oso pardo, oso pardo, ¿qué ves ahí?",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780805069013",
+    "buyUrl": "https://www.amazon.com/Oso-pardo-%C2%BFqu%C3%A9-ves-ah%C3%AD/dp/0805069011",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A rhythmic, repetitive story that helps children practice colors, animals, and prediction.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Pete, el gato: I Love My White Shoes",
+    "languages": [
+      "Spanish",
+      "English"
+    ],
+    "isbn13": "9788494469893",
+    "buyUrl": "https://www.amazon.com/Pete-gato-Love-White-Shoes/dp/8494469893",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Brown Bear, Brown Bear, What Do You See?",
+    "languages": [
+      "English"
+    ],
+    "isbn13": "9780805047905",
+    "buyUrl": "https://www.amazon.com/Brown-Bear-What-See-Book/dp/0805047905",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A rhythmic, repetitive story that helps children practice colors, animals, and prediction.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Madeline",
+    "languages": [
+      "English"
+    ],
+    "isbn13": "9780670445806",
+    "buyUrl": "https://www.amazon.com/Madeline-Ludwig-Bemelmans/dp/0670445800",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A classic story featuring a brave young girl whose small adventures leave a big impression.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Abuela",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "isbn13": "9780689713231",
+    "buyUrl": "https://www.amazon.com/Abuela-Arthur-Dorros/dp/0689713230",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A loving story about imagination, family connection, and seeing the world through a child’s eyes.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My First 100 Portuguese Words",
+    "languages": [
+      "Portuguese",
+      "English"
+    ],
+    "isbn13": "9781958934937",
+    "buyUrl": "https://www.amazon.com/My-First-Portuguese-Words-Bilingual/dp/1958934938",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "French for Kids: My First 100 Words",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9781641524155",
+    "buyUrl": "https://www.amazon.com/French-Kids-First-Words-Bilingual/dp/1641524154",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My First Haitian Creole Alphabets",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9781737249634",
+    "buyUrl": "https://www.amazon.com/My-First-Haitian-Creole-Alphabets/dp/1737249634",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "My First Haitian Creole Animals",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9781737249641",
+    "buyUrl": "https://www.amazon.com/My-First-Haitian-Creole-Animals/dp/1737249642",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Haitian Creole Folktales for Children",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9781638191780",
+    "buyUrl": "https://www.amazon.com/Haitian-Creole-Folktales-Children-Bilingual/dp/1638191784",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Bilingual Haitian Creole-English Bible Stories for Kids",
+    "languages": [
+      "Haitian Creole",
+      "English"
+    ],
+    "isbn13": "9781957189062",
+    "buyUrl": "https://www.amazon.com/Bilingual-Haitian-Creole-English-Bible-Stories/dp/1957189066",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Is for Ayiti",
+    "languages": [
+      "English",
+      "Haitian Creole"
+    ],
+    "isbn13": "9781736273326",
+    "buyUrl": "https://www.amazon.com/Ayiti-Haitian-Creole-Bilingual-Childrens/dp/1736273329",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.",
+    "coverUrl": ""
+  },
+  {
+    "title": "French Kids First Words",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9781951949402",
+    "buyUrl": "https://www.amazon.com/French-Kids-First-Words-Bilingual/dp/1951949409",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Portuguese-English First 100 Words",
+    "languages": [
+      "Portuguese",
+      "English"
+    ],
+    "isbn13": "9781911509738",
+    "buyUrl": "https://www.amazon.com/Portuguese-English-First-Words-Bilingual-Book/dp/191150973X",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Arabic Alphabet Book",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9780997139559",
+    "buyUrl": "https://www.amazon.com/Arabic-Alphabet-Book-Bilingual-Children/dp/0997139559",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "An early learning or family reading book that helps children build vocabulary, concepts, and confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Proudest Blue (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780063055612",
+    "buyUrl": "https://www.amazon.com/Proudest-Blue-Spanish-Edition/dp/006305561X",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Different Pond (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781478869245",
+    "buyUrl": "https://www.amazon.com/Different-Pond-Spanish-Edition/dp/1478869241",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Merci Suárez cambia de marcha (Merci Suárez Changes Gears)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788413181233",
+    "buyUrl": "https://www.amazon.com/Merci-Su%C3%A1rez-cambia-marcha-Spanish/dp/8413181232",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Ghost Boys (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781338741315",
+    "buyUrl": "https://www.amazon.com/Ghost-Boys-Spanish-Jewell-Parker-Rhodes/dp/1338741316",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Front Desk (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781338718416",
+    "buyUrl": "https://www.amazon.com/Front-Desk-Spanish-Kelly-Yang/dp/1338718411",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "New Kid (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786073818353",
+    "buyUrl": "https://www.amazon.com/New-Kid-Spanish-Jerry-Craft/dp/6073818358",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Boy at the Back of the Class (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140129481",
+    "buyUrl": "https://jarirbooksusa.com/84626.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Wonder (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140128705",
+    "buyUrl": "https://jarirbooksusa.com/81553.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Percy Jackson and the Sea of Monsters (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140129924",
+    "buyUrl": "https://jarirbooksusa.com/84833.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A fast-paced fantasy adventure where a young hero discovers secrets about his identity and the gods.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Matilda (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140127210",
+    "buyUrl": "https://jarirbooksusa.com/80409.html",
+    "agesText": "Ages 9-14",
+    "minAge": 9,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Little Prince (French/English bilingual)",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "isbn13": "9780991603742",
+    "buyUrl": "https://www.amazon.com/Little-Prince-French-English-Bilingual/dp/0991603741",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A French-language title that gives readers a chance to enjoy story while building language confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Le Petit Prince",
+    "languages": [
+      "French"
+    ],
+    "isbn13": "9780156013987",
+    "buyUrl": "https://www.amazon.com/Petit-Prince-French-Antoine-Saint-Exup%C3%A9ry/dp/0156013983",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A French-language title that gives readers a chance to enjoy story while building language confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Le Petit Nicolas",
+    "languages": [
+      "French"
+    ],
+    "isbn13": "9782070612758",
+    "buyUrl": "https://www.amazon.com/Petit-Nicolas-Semp%C3%A9/dp/2070612752",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A French-language title that gives readers a chance to enjoy story while building language confidence.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Meu Pé de Laranja Lima",
+    "languages": [
+      "Portuguese"
+    ],
+    "isbn13": "9788506086896",
+    "buyUrl": "https://www.amazon.com/Meu-P%C3%A9-Laranja-Lima-Portuguese/dp/8506086892",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.",
+    "coverUrl": ""
+  },
+  {
+    "title": "O Menino Maluquinho",
+    "languages": [
+      "Portuguese"
+    ],
+    "isbn13": "9788506055106",
+    "buyUrl": "https://www.amazon.com/Menino-Maluquinho-Portuguese-Ziraldo/dp/8506055105",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Diário de um Banana",
+    "languages": [
+      "Portuguese"
+    ],
+    "isbn13": "9788576831307",
+    "buyUrl": "https://www.amazon.com/Di%C3%A1rio-um-Banana-Portuguese-Kinney/dp/8576831302",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A humorous school-and-family story told through the eyes of a kid trying to survive growing up.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Bolsa Amarela",
+    "languages": [
+      "Portuguese"
+    ],
+    "isbn13": "9788516086978",
+    "buyUrl": "https://www.amazon.com/Bolsa-Amarela-Portuguese-Lygia-Bojunga/dp/8516086971",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Snowy Day (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780140501827",
+    "buyUrl": "https://www.amazon.com/Snowy-Day-Spanish-Ezra-Jack-Keats/dp/0140501827",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Llama Llama rojo pijama (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780451474575",
+    "buyUrl": "https://www.amazon.com/Llama-rojo-pijama-Spanish-Edition/dp/0451474572",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Buenas noches, Gorilla (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780399247212",
+    "buyUrl": "https://www.amazon.com/Buenas-noches-Gorila-Spanish-Edition/dp/0399247211",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "La araña muy ocupada",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780399242415",
+    "buyUrl": "https://www.amazon.com/ara%C3%B1a-muy-ocupada-Spanish-Edition/dp/0399242414",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "¿Eres mi mamá?",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780394848365",
+    "buyUrl": "https://www.amazon.com/%C2%BFEres-mi-mam%C3%A1-Spanish-Edition/dp/0394848363",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Chicka Chicka Boom Boom (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781442450707",
+    "buyUrl": "https://www.amazon.com/Chicka-Boom-Spanish-Edition-Martin/dp/1442450707",
+    "agesText": "Ages 0-4",
+    "minAge": 0,
+    "maxAge": 4,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Clifford el gran perro colorado",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780545215782",
+    "buyUrl": "https://www.amazon.com/Clifford-gran-perro-colorado-Spanish/dp/0545215787",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Judy Moody adivina el futuro",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781536200713",
+    "buyUrl": "https://www.amazon.com/Judy-Moody-adivina-futuro-Spanish/dp/1536200716",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Magic Tree House: Noche de fantasmas",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781930332751",
+    "buyUrl": "https://www.amazon.com/Magic-Tree-House-Noche-fantasmas/dp/1930332754",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Junie B. Jones y el autobús apestoso",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780375828133",
+    "buyUrl": "https://www.amazon.com/Junie-Jones-autob%C3%BAs-apestoso-Spanish/dp/037582813X",
+    "agesText": "Ages 5-9",
+    "minAge": 5,
+    "maxAge": 9,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Charlotte's Web (Arabic/English bilingual)",
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "isbn13": "9789953668857",
+    "buyUrl": "https://jarirbooksusa.com/72053.html",
+    "agesText": "Ages 7-14",
+    "minAge": 7,
+    "maxAge": 14,
+    "description": "A heartfelt animal story about friendship, loyalty, and caring for others.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Hobbit (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140129337",
+    "buyUrl": "https://jarirbooksusa.com/84595.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A fantasy quest full of unlikely courage, dangerous journeys, and unforgettable characters.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Bridge to Terabithia (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140127661",
+    "buyUrl": "https://jarirbooksusa.com/80515.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Boy in the Striped Pajamas (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140128781",
+    "buyUrl": "https://jarirbooksusa.com/81568.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Fault in Our Stars (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140125216",
+    "buyUrl": "https://jarirbooksusa.com/78598.html",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Long Walk to Water (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788426139273",
+    "buyUrl": "https://www.amazon.com/Largo-camino-agua-Spanish-Edition/dp/8426139272",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Esperanza renace",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780439398855",
+    "buyUrl": "https://www.amazon.com/Esperanza-Renace-Spanish-Pam-Mu%C3%B1oz-Ryan/dp/0439398851",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Coraline (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788413188270",
+    "buyUrl": "https://www.amazon.com/Coraline-Spanish-Neil-Gaiman/dp/841318827X",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Monster Calls (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788498381498",
+    "buyUrl": "https://www.amazon.com/Un-monstruo-viene-verme-Spanish/dp/8498381494",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Outsiders (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788416657728",
+    "buyUrl": "https://www.amazon.com/Rebeldes-Spanish-S-Hinton/dp/8416657726",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Poet X (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788417854362",
+    "buyUrl": "https://www.amazon.com/Poeta-X-Spanish-Elizabeth-Acevedo/dp/8417854363",
+    "agesText": "Ages 14+",
+    "minAge": 14,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "American Street (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786073195718",
+    "buyUrl": "https://www.amazon.com/American-Street-Spanish-Ibi-Zoboi/dp/6073195717",
+    "agesText": "Ages 14+",
+    "minAge": 14,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "A Place at the Table (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140130333",
+    "buyUrl": "https://jarirbooksusa.com/85041.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "When Stars Are Scattered (Arabic edition)",
+    "languages": [
+      "Arabic"
+    ],
+    "isbn13": "9786140130340",
+    "buyUrl": "https://jarirbooksusa.com/85042.html",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "El Deafo (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786073811491",
+    "buyUrl": "https://www.amazon.com/El-Deafo-Spanish-Cece-Bell/dp/6073811493",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Crossover (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781328635204",
+    "buyUrl": "https://www.amazon.com/Crossover-Spanish-Kwame-Alexander/dp/1328635201",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Holes (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9788467589238",
+    "buyUrl": "https://www.amazon.com/Holes-Spanish-Louis-Sachar/dp/8467589233",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Wild Robot (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9786073819886",
+    "buyUrl": "https://www.amazon.com/Robot-salvaje-Spanish-Peter-Brown/dp/6073819885",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "Inside Out and Back Again (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9780062686183",
+    "buyUrl": "https://www.amazon.com/De-vuelta-a-casa-Spanish/dp/0062686186",
+    "agesText": "Ages 10-14",
+    "minAge": 10,
+    "maxAge": 14,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "The Last Cuentista (Spanish edition)",
+    "languages": [
+      "Spanish"
+    ],
+    "isbn13": "9781646143726",
+    "buyUrl": "https://www.amazon.com/%C3%9Altima-cuentista-Spanish-Donna-Barba/dp/1646143728",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.",
+    "coverUrl": ""
+  },
+  {
+    "title": "All American Yemeni Girls: Being Muslim in a Public School",
+    "languages": [
+      "English"
+    ],
+    "isbn13": "9780812218947",
+    "buyUrl": "https://www.amazon.com/All-American-Yemeni-Girls-Muslim/dp/0812218949/ref=tmm_pap_swatch_0?_encoding=UTF8&dib_tag=se&dib=eyJ2IjoiMSJ9.hCQMKQWBRf00kcxNNwlAA_81w5TNd8xuY5fVa1UwC0cB3DfTH8f3pDPO7t0wUmMAJDcc42ChFgBVfsr572sFF10zRh0rCyg5qDhi9-TtdL4KoeI-LYeQcWck-QdoJu6ZC953FUUPlBkSAZ3iN_nmi0AtWeWu5uH8x0Kgyoz8t-Y3gVAPI_XEqct-19kYSWo7vwYFObk5JraaXmeTZKqsVtpX68dKbiJGrauAtZwra-A.bhcRbtS01Mrmht5Q5K3lTAqtuzuhZbO-3Vhg1LKE9ZQ&qid=1773424690&sr=1-2",
+    "agesText": "Ages 12+",
+    "minAge": 12,
+    "maxAge": 99,
+    "description": "A family-friendly book that supports literacy, language growth, and enjoyment through reading.",
+    "coverUrl": ""
+  }
+];
+
   const languageButtons = ["All", "English", "Spanish", "Arabic", "Haitian Creole", "French", "Portuguese"];
   const ageButtons = [
     { label: "All Ages", min: 0, max: 200 },
@@ -208,177 +2116,12 @@
 
   let selectedLang = "All";
   let selectedAgeLabel = "All Ages";
-  let books = [];
 
   const langbar = document.getElementById("langbar");
   const agebar = document.getElementById("agebar");
   const grid = document.getElementById("grid");
   const search = document.getElementById("search");
   const instructions = document.getElementById("instructions");
-  const status = document.getElementById("status");
-
-  function clean(value) {
-    return value == null ? "" : String(value).trim();
-  }
-
-  function normalizeLanguage(value) {
-    const v = clean(value)
-      .replace(/Haitin/gi, "Haitian")
-      .replace(/Haitian Kreyol/gi, "Haitian Creole")
-      .replace(/Kreyol/gi, "Creole");
-    return v;
-  }
-
-  function normalizeISBN(value) {
-    return clean(value).replace(/[^0-9Xx]/g, "");
-  }
-
-  function parseAgeRange(text) {
-    const s = clean(text);
-    const rangeMatch = s.match(/(\d+)\s*-\s*(\d+)/);
-    if (rangeMatch) {
-      return {
-        minAge: Number(rangeMatch[1]),
-        maxAge: Number(rangeMatch[2]),
-        agesText: `Ages ${rangeMatch[1]}-${rangeMatch[2]}`
-      };
-    }
-
-    const plusMatch = s.match(/(\d+)\s*\+/);
-    if (plusMatch) {
-      return {
-        minAge: Number(plusMatch[1]),
-        maxAge: 99,
-        agesText: `Ages ${plusMatch[1]}+`
-      };
-    }
-
-    return {
-      minAge: 0,
-      maxAge: 99,
-      agesText: "Age not listed"
-    };
-  }
-
-  function fallbackDescription(title, languages) {
-    const t = title.toLowerCase();
-
-    const rules = [
-      [["wimpy kid", "rodrick"], "A humorous school-and-family story told through the eyes of a kid navigating growing up."],
-      [["harry potter"], "A young wizard discovers a hidden world of magic, friendship, and danger on his first big adventure."],
-      [["percy jackson"], "A fast-paced fantasy adventure where a young hero discovers secrets about his identity and the gods."],
-      [["hunger games", "juegos del hambre"], "A high-stakes dystopian story about survival, courage, and standing up against injustice."],
-      [["divergente"], "A futuristic adventure about identity, choices, and bravery in a divided society."],
-      [["hobbit"], "A fantasy quest full of unlikely courage, dangerous journeys, and unforgettable characters."],
-      [["rainbow fish", "pez arcoíris"], "A gentle story about friendship and learning that sharing with others brings joy."],
-      [["cat in the hat"], "A playful rhyming story where an unexpected visitor turns an ordinary day into a wild adventure."],
-      [["nelly’s box", "nelly's box"], "A warm family story about curiosity, feelings, and the surprises that can come from a special box."],
-      [["summer with grandpa"], "A tender family story about spending meaningful time with a grandparent and making memories together."],
-      [["lili,"], "A simple bilingual family story following Lili through everyday experiences and new discoveries."],
-      [["learn", "learning library", "my first"], "An early learning book that helps children build vocabulary and basic concepts in a fun way."],
-      [["very hungry caterpillar", "oruga muy hambrienta"], "A classic early-reader story about growth, counting, and transformation."],
-      [["brown bear", "oso pardo"], "A rhythmic, repetitive story that helps children practice colors, animals, and prediction."],
-      [["madeline"], "A classic story featuring a brave young girl whose small adventures leave a big impression."],
-      [["abuela"], "A loving story about imagination, family connection, and seeing the world through a child’s eyes."],
-      [["secret gate", "house on the cliff", "tower treasure", "murder on the links"], "A mystery adventure filled with clues, suspense, and problem-solving."],
-      [["seeds in a dark fruit sky"], "A collection of short stories that opens a window into Haitian life, memory, and culture."],
-      [["sadiq"], "A chapter-book story about friendship, school, and everyday adventures."],
-      [["jet the cat"], "A playful bilingual story with a curious animal character that helps children build language through repetition."],
-      [["not for mimi"], "A fun story about a curious little cat learning what is and is not meant for her."],
-      [["mwen reve", "i dream too"], "An encouraging story that invites children to dream big and believe in their future."]
-    ];
-
-    for (const [keys, description] of rules) {
-      if (keys.some(k => t.includes(k))) return description;
-    }
-
-    if (languages.includes("Arabic")) return "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.";
-    if (languages.includes("Spanish")) return "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.";
-    if (languages.includes("Haitian Creole")) return "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.";
-    if (languages.includes("French")) return "A French-language title that gives readers a chance to enjoy story while building language confidence.";
-    if (languages.includes("Portuguese")) return "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.";
-    return "A family-friendly book that supports literacy, language growth, and enjoyment through reading.";
-  }
-
-  function parseCSVLine(line) {
-    const result = [];
-    let current = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      const next = line[i + 1];
-
-      if (char === '"' && inQuotes && next === '"') {
-        current += '"';
-        i++;
-      } else if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        result.push(current);
-        current = "";
-      } else {
-        current += char;
-      }
-    }
-
-    result.push(current);
-    return result;
-  }
-
-  function parseCSV(text) {
-    const lines = text.replace(/\r/g, "").split("\n").filter(line => line.trim() !== "");
-    if (!lines.length) return [];
-
-    const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-
-    return lines.slice(1).map(line => {
-      const values = parseCSVLine(line);
-      const row = {};
-      headers.forEach((header, i) => {
-        row[header] = values[i] ?? "";
-      });
-      return row;
-    });
-  }
-
-  function rowToBook(row) {
-    const title =
-      clean(row.title) ||
-      clean(row.book) ||
-      clean(row["book title"]) ||
-      clean(row.name);
-
-    if (!title) return null;
-
-    const lang1 = normalizeLanguage(row.lang1 || row.language1 || row.language || row.lang || "");
-    const lang2 = normalizeLanguage(row.lang2 || row.language2 || "");
-    const languages = [lang1, lang2].filter(Boolean);
-
-    const isbn13 = normalizeISBN(row.isbn13 || row.isbn || row["isbn-13"] || "");
-    const buyUrl = clean(row.productlink || row["product link"] || row.amazonurl || row.amazon || row.link) ||
-      (isbn13 ? `https://www.amazon.com/s?k=${isbn13}` : "#");
-
-    const ageRaw = clean(row.age || row.ages || row.agerange || row["age range"] || row.notes || row.note);
-    const ageInfo = parseAgeRange(ageRaw);
-
-    const description =
-      clean(row.description) ||
-      clean(row.desc) ||
-      fallbackDescription(title, languages);
-
-    return {
-      title,
-      languages,
-      isbn13,
-      buyUrl,
-      agesText: ageInfo.agesText,
-      minAge: ageInfo.minAge,
-      maxAge: ageInfo.maxAge,
-      description,
-      coverUrl: clean(row.coverurl || row["cover url"])
-    };
-  }
 
   function openLibraryCover(isbn13) {
     return `https://covers.openlibrary.org/b/isbn/${encodeURIComponent(isbn13)}-L.jpg`;
@@ -432,7 +2175,6 @@
       img.src = placeholderCover(book.title);
       return;
     }
-
     const ol = openLibraryCover(book.isbn13);
     const testImg = new Image();
 
@@ -517,7 +2259,7 @@
     grid.innerHTML = "";
 
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="error">No matches. Try a different language, age range, or search.</div>`;
+      grid.innerHTML = `<div class="card"><div class="cardbody">No matches. Try a different language, age range, or search.</div></div>`;
       return;
     }
 
@@ -531,11 +2273,9 @@
       img.loading = "lazy";
       img.style.cursor = "pointer";
       img.src = placeholderCover(book.title);
-
       if (book.buyUrl && book.buyUrl !== "#") {
         img.addEventListener("click", () => window.open(book.buyUrl, "_blank", "noopener,noreferrer"));
       }
-
       loadBestCover(img, book);
 
       const body = document.createElement("div");
@@ -549,7 +2289,8 @@
         <div class="desc">${book.description || ""}</div>
         <div class="meta">${book.isbn13 ? "ISBN-13: " + book.isbn13 : "ISBN not listed"}</div>
         <div class="btnrow">
-          <a class="linkbtn primary" href="${book.buyUrl || "#"}" target="_blank" rel="noopener noreferrer">Shop This Book</a>
+          <a class="linkbtn primary" href="${book.buyUrl || "#"}"
+             target="_blank" rel="noopener noreferrer">Shop This Book</a>
         </div>
       `;
 
@@ -559,34 +2300,12 @@
     });
   }
 
-  async function loadBooksFromSheet() {
-    status.innerHTML = `<div class="loading">Loading books from your Google Sheet…</div>`;
-
-    try {
-      const res = await fetch(SHEET_CSV_URL);
-      if (!res.ok) throw new Error("Could not load the published CSV.");
-      const text = await res.text();
-      const rows = parseCSV(text);
-      books = rows.map(rowToBook).filter(Boolean);
-
-      status.innerHTML = "";
-      render();
-    } catch (err) {
-      status.innerHTML = `
-        <div class="error">
-          I couldn’t load the Google Sheet. Make sure the sheet is published to the web as CSV, and that the <code>SHEET_CSV_URL</code> is correct.
-        </div>
-      `;
-      grid.innerHTML = "";
-    }
-  }
-
   document.getElementById("year").textContent = new Date().getFullYear();
   buildLanguageButtons();
   buildAgeButtons();
   renderInstructions();
   search.addEventListener("input", render);
-  loadBooksFromSheet();
+  render();
 </script>
 </body>
 </html>
