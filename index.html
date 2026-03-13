@@ -5,18 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Family Reading Night — Multilingual Books</title>
   <style>
-    body { font-family: system-ui, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
-    header { background:#fff; border-bottom:1px solid #e5e7eb; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px; }
-    h1 { margin: 0 0 6px; font-size: 22px; }
-    p { margin: 6px 0; color:#444; }
-    .small { font-size: 13px; color:#666; margin-top: 8px; }
-    .controls { display:grid; gap:12px; grid-template-columns: 1fr; margin-top: 14px; }
-    .searchrow { display:grid; gap:10px; grid-template-columns: 1fr; }
-    input { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d1d5db; font-size: 14px; }
-    .barlabel { font-weight:800; font-size: 13px; color:#333; margin-top: 4px; }
-    .langbar, .agebar { display:flex; flex-wrap: wrap; gap:10px; margin-top: 6px; }
-    button.btn {
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f6f7f9; color: #111; }
+    header { background: white; border-bottom: 1px solid #e5e7eb; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 18px; }
+    h1 { margin: 0 0 6px; font-size: 26px; }
+    p { margin: 6px 0; color: #444; }
+    .small { font-size: 13px; color: #666; margin-top: 8px; }
+    .controls { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 16px; }
+    .searchrow { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .barlabel { font-weight: 800; font-size: 13px; color: #333; margin-top: 4px; }
+    .langbar, .agebar, .shopbar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    button.btn, a.shopbtn {
       border: 1px solid #111;
       background: #fff;
       padding: 10px 14px;
@@ -24,189 +31,353 @@
       font-weight: 800;
       font-size: 14px;
       cursor: pointer;
+      text-decoration: none;
+      color: #111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    button.btn.active { background:#111; color:#fff; }
-    .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 16px; }
+    button.btn.active { background: #111; color: #fff; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 18px;
+    }
     .card {
-      background:#fff;
-      border:1px solid #e5e7eb;
-      border-radius:18px;
-      overflow:hidden;
-      box-shadow:0 1px 2px rgba(0,0,0,.05);
-      display:flex;
-      flex-direction:column;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
     }
     .cover {
       width: 100%;
       aspect-ratio: 3 / 4;
       object-fit: cover;
-      background: #f1f5f9;
-      display:block;
+      background: #eef2f7;
+      display: block;
     }
-    .cardbody { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:8px; }
-    .pair { display:inline-block; font-size:12px; background:#eef2ff; color:#3730a3; padding:4px 8px; border-radius:999px; width: fit-content; }
-    .agepill { display:inline-block; font-size:12px; background:#ecfeff; color:#155e75; padding:4px 8px; border-radius:999px; width: fit-content; }
-    .title { font-weight: 900; line-height: 1.2; }
-    .meta { font-size: 13px; color:#555; }
-    .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-top: 4px; }
-    a.linkbtn { text-decoration:none; padding:10px 12px; border-radius:12px; border:1px solid #111; font-weight:800; font-size:14px; }
-    a.primary { background:#111; color:#fff; }
+    .cardbody { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .tagrow { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pair, .agepill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+    .pair { background: #eef2ff; color: #3730a3; }
+    .agepill { background: #ecfeff; color: #155e75; }
+    .title { font-weight: 900; line-height: 1.2; font-size: 18px; }
+    .desc { font-size: 14px; color: #374151; line-height: 1.45; }
+    .meta { font-size: 13px; color: #555; }
+    .btnrow { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+    a.linkbtn {
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #111;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    a.primary { background: #111; color: #fff; }
     .rtl { direction: rtl; text-align: right; }
-    footer { text-align:center; padding:18px; color:#666; font-size: 13px; }
-    @media (max-width: 640px){
-      button.btn { flex: 1 1 auto; }
+    .loading, .error {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+    footer { text-align: center; padding: 20px; color: #666; font-size: 13px; }
+    @media (max-width: 640px) {
+      button.btn, a.shopbtn { flex: 1 1 auto; }
     }
   </style>
 </head>
-
 <body>
 <header>
   <div class="wrap">
     <h1>Family Reading Night — Multilingual Book List</h1>
-
     <div id="instructions"></div>
-    <div class="small">This website does not sell books or process payments. “Buy” buttons open Amazon in a new tab.</div>
+    <div class="small">This website does not sell books or process payments. Book covers and retailer buttons open in a new tab.</div>
 
     <div class="controls">
       <div>
-        <div class="barlabel">Language</div>
+        <div class="barlabel">Filter by language</div>
         <div class="langbar" id="langbar"></div>
       </div>
 
       <div>
-        <div class="barlabel">Age</div>
+        <div class="barlabel">Filter by age</div>
         <div class="agebar" id="agebar"></div>
       </div>
 
+      <div>
+        <div class="barlabel">More places to shop</div>
+        <div class="shopbar">
+          <a class="shopbtn" href="https://jarirbooksusa.com/" target="_blank" rel="noopener noreferrer">Arabic Books</a>
+          <a class="shopbtn" href="https://www.booksbythebushel.com/" target="_blank" rel="noopener noreferrer">Spanish Books</a>
+          <a class="shopbtn" href="https://bloomlibrary.org/language:ht" target="_blank" rel="noopener noreferrer">Haitian Creole Books</a>
+        </div>
+      </div>
+
       <div class="searchrow">
-        <input id="search" placeholder="Search by title or ISBN…" />
+        <input id="search" placeholder="Search by title, language, age, or ISBN…" />
       </div>
     </div>
   </div>
 </header>
 
 <main class="wrap">
+  <div id="status"></div>
   <div id="grid" class="grid"></div>
 </main>
 
 <footer>© <span id="year"></span></footer>
 
 <script>
+  // Replace gid if your book list is on a different tab.
+  const SHEET_CSV_URL =
+    "https://docs.google.com/spreadsheets/d/1Y4S5TxloXEW_rhp3eT5Qe-3gSaXXEKb2XMB3q8bS27w/export?format=csv&gid=0";
+
   const instructionsByLang = {
     "All": {
       html: `
-        <p><b>Choose a language</b> and <b>choose an age</b>. You’ll see books that match your selections.</p>
-        <p>Tap a cover or click <b>Buy on Amazon</b> to purchase.</p>
+        <p><b>Choose a language</b> and <b>choose an age range</b>. You’ll see books that match your selections.</p>
+        <p>Tap a book cover or click <b>Shop This Book</b> to learn more or buy it.</p>
       `,
       rtl: false
     },
     "English": {
       html: `
-        <p><b>Choose your language</b> and <b>choose an age</b>. You’ll see books that match your selections.</p>
-        <p>Tap a cover or click <b>Buy on Amazon</b> to purchase.</p>
+        <p><b>Choose your language</b> and <b>choose an age range</b>. You’ll see books that match your selections.</p>
+        <p>Tap a book cover or click <b>Shop This Book</b> to learn more or buy it.</p>
       `,
       rtl: false
     },
     "Spanish": {
       html: `
-        <p><b>Elige tu idioma</b> y <b>elige una edad</b>. Verás libros que coinciden con tus selecciones.</p>
-        <p>Toca la portada o haz clic en <b>Comprar en Amazon</b> para comprar.</p>
+        <p><b>Elige tu idioma</b> y <b>elige un rango de edad</b>. Verás libros que coinciden con tu selección.</p>
+        <p>Toca la portada o haz clic en <b>Comprar este libro</b> para ver más información o comprar.</p>
       `,
       rtl: false
     },
     "Arabic": {
       html: `
-        <p><b>اختر لغتك</b> و<b>اختر العمر</b>. ستظهر لك كتب مناسبة لاختياراتك.</p>
-        <p>اضغط على الغلاف أو زر <b>الشراء من أمازون</b> للشراء.</p>
+        <p><b>اختر لغتك</b> و<b>اختر الفئة العمرية</b>. ستظهر لك الكتب المناسبة لاختيارك.</p>
+        <p>اضغط على الغلاف أو زر <b>شراء هذا الكتاب</b> لمعرفة المزيد أو الشراء.</p>
       `,
       rtl: true
     },
     "Haitian Creole": {
       html: `
-        <p><b>Chwazi lang ou</b> epi <b>chwazi laj</b>. W ap wè liv ki mache ak chwa w yo.</p>
-        <p>Touche kouvèti a oswa klike <b>Achte sou Amazon</b> pou achte.</p>
+        <p><b>Chwazi lang ou</b> epi <b>chwazi gwoup laj la</b>. W ap wè liv ki mache ak sa w chwazi yo.</p>
+        <p>Touche kouvèti liv la oswa klike <b>Achte liv sa a</b> pou wè plis enfòmasyon oswa achte.</p>
       `,
       rtl: false
     },
     "French": {
       html: `
-        <p><b>Choisissez votre langue</b> et <b>choisissez l’âge</b>. Vous verrez des livres qui correspondent à vos choix.</p>
-        <p>Appuyez sur la couverture ou cliquez sur <b>Acheter sur Amazon</b> pour acheter.</p>
+        <p><b>Choisissez votre langue</b> et <b>choisissez une tranche d’âge</b>. Vous verrez les livres qui correspondent à votre sélection.</p>
+        <p>Appuyez sur la couverture ou cliquez sur <b>Acheter ce livre</b> pour en savoir plus ou acheter.</p>
       `,
       rtl: false
     },
     "Portuguese": {
       html: `
-        <p><b>Escolha seu idioma</b> e <b>escolha a idade</b>. Você verá livros que correspondem às suas seleções.</p>
-        <p>Toque na capa ou clique em <b>Comprar na Amazon</b> para comprar.</p>
+        <p><b>Escolha seu idioma</b> e <b>escolha a faixa etária</b>. Você verá os livros que combinam com sua seleção.</p>
+        <p>Toque na capa ou clique em <b>Comprar este livro</b> para saber mais ou comprar.</p>
       `,
       rtl: false
     }
   };
 
-  const books = [
-    { title: "Bear About Town", languages: ["English", "Haitian Creole"], isbn13: "9798888594179", age: "3+", coverUrl: "" },
-    { title: "The Mexiglish Girl/La Chica Mexiglish", languages: ["English", "Spanish"], isbn13: "9781739937706", age: "0+", coverUrl: "" },
-    { title: "Diario Del Wimpy Kid", languages: ["Spanish"], isbn13: "9781644735046", age: "7+", coverUrl: "" },
-    { title: "Seeds in a Dark Fruit Sky: Short Stories from Haiti", languages: ["English", "Haitian Creole"], isbn13: "9781733087308", age: "0+", coverUrl: "" },
-    { title: "مذكرات طالب - قوانين االخ rules (Arabic Edition)", languages: ["Arabic"], isbn13: "9786140105164", age: "7+", coverUrl: "" },
-    { title: "Sadiq Collection by Siman Nuurali 8 Books Collection Set", languages: ["English"], isbn13: "9781398207196", age: "7+", coverUrl: "" },
-    { title: "Jet the Cat (Is Not a Cat)", languages: ["Arabic", "English"], isbn13: "9798888594360", age: "3+", coverUrl: "" },
-    { title: "Diary Of A Wimpy Kid", languages: ["Arabic"], isbn13: "9786140101630", age: "7+", coverUrl: "" },
-    { title: "Summer with Grandpa - جدي مع الصيف", languages: ["Arabic", "English"], isbn13: "9798396329348", age: "3+", coverUrl: "" },
-    { title: "The Rainbow Fish/El Pez Arcoíris English/Spanish", languages: ["English", "Spanish"], isbn13: "9780735843714", age: "3+", coverUrl: "" },
-    { title: "The Rainbow Fish English/Arabic", languages: ["Arabic", "English"], isbn13: "9780735843721", age: "3+", coverUrl: "" },
-    { title: "Nelly’s Box - نيللي صندوق", languages: ["Arabic", "English"], isbn13: "9798846644175", age: "3+", coverUrl: "" },
-    { title: "The Cat in the Hat in English and French", languages: ["English", "French"], isbn13: "9780394801711", age: "3+", coverUrl: "" },
-    { title: "Amanda and the Lost Time", languages: ["English", "French"], isbn13: "9781525953231", age: "3+", coverUrl: "" },
-    { title: "Summer with Grandpa - Verão com o Avô", languages: ["English", "Portuguese"], isbn13: "9798395782021", age: "3+", coverUrl: "" },
-    { title: "Happy within / Feliz por dentro", languages: ["English", "Portuguese"], isbn13: "9781916395633", age: "3+", coverUrl: "" },
-    { title: "Nelly’s Box - A Caixa da Nelly", languages: ["English", "Portuguese"], isbn13: "9798844533815", age: "3+", coverUrl: "" },
-    { title: "Nelly’s Box - La boîte de Nelly", languages: ["English", "French"], isbn13: "9798844165948", age: "3+", coverUrl: "" },
-    { title: "Nelly’s Box - La caja de Nelly", languages: ["English", "Spanish"], isbn13: "9798844119545", age: "3+", coverUrl: "" },
-    { title: "La ley de Rodrick / Rodrick Rules", languages: ["Spanish"], isbn13: "9781644735053", age: "7+", coverUrl: "" },
-    { title: "In Search of the Secret Gate - En Busca de la Entrada Secreta", languages: ["English", "Spanish"], isbn13: "9798378662968", age: "7+", coverUrl: "" },
-    { title: "Summer with Grandpa - Verano con el abuelo", languages: ["English", "Spanish"], isbn13: "9798395381347", age: "3+", coverUrl: "" },
-    { title: "The House on the Cliff: English-Spanish Dual Language Edition", languages: ["English", "Spanish"], isbn13: "9798989403172", age: "7+", coverUrl: "" },
-    { title: "The Tower Treasure: English-Spanish Dual Language Edition", languages: ["English", "Spanish"], isbn13: "9798989403158", age: "7+", coverUrl: "" },
-    { title: "I Took the Moon for a Walk", languages: ["English", "Haitian Creole"], isbn13: "9798888597613", age: "3+", coverUrl: "" },
-    { title: "Not For Mimi/Pa Pou Mimi", languages: ["English", "Haitian Creole"], isbn13: "9798988863915", age: "3+", coverUrl: "" },
-    { title: "Mwen reve I dream too", languages: ["English", "Haitian Creole"], isbn13: "9781626322301", age: "3+", coverUrl: "" },
-    { title: "Learn Haitian Creole For Kids", languages: ["English", "Haitian Creole"], isbn13: "9798873981618", age: "3+", coverUrl: "" },
-    { title: "Lili, Mommy and Our House", languages: ["English", "Haitian Creole"], isbn13: "9798355883980", age: "3+", coverUrl: "" },
-    { title: "Lili, Tati, And The Zoo", languages: ["English", "Haitian Creole"], isbn13: "9798411903683", age: "3+", coverUrl: "" },
-    { title: "Lili, Grandma, and Legume", languages: ["English", "Haitian Creole"], isbn13: "9798778168954", age: "3+", coverUrl: "" },
-    { title: "Harry Potter y la piedra filosofal", languages: ["Spanish"], isbn13: "9788478884452", age: "12+", coverUrl: "" },
-    { title: "Percy Jackson y el ladrón del rayo", languages: ["Spanish"], isbn13: "9788498386264", age: "12+", coverUrl: "" },
-    { title: "Los juegos del hambre", languages: ["Spanish"], isbn13: "9788427202136", age: "12+", coverUrl: "" },
-    { title: "Divergente", languages: ["Spanish"], isbn13: "9788427201917", age: "12+", coverUrl: "" },
-    { title: "El hobbit", languages: ["Spanish"], isbn13: "9788445071994", age: "12+", coverUrl: "" },
-    { title: "هاري بوتر وحجر الفيلسوف", languages: ["Arabic"], isbn13: "9789953891717", age: "12+", coverUrl: "" },
-    { title: "بيرسي جاكسون وسارق البرق", languages: ["Arabic"], isbn13: "9789953895234", age: "12+", coverUrl: "" },
-    { title: "ألعاب الجوع", languages: ["Arabic"], isbn13: "9789953896972", age: "12+", coverUrl: "" },
-    { title: "سيد الخواتم: رفقة الخاتم", languages: ["Arabic"], isbn13: "9789953893032", age: "12+", coverUrl: "" },
-    { title: "Dezafi", languages: ["Haitian Creole"], isbn13: "9780913447624", age: "12+", coverUrl: "" },
-    { title: "Ti Zwazo", languages: ["Haitian Creole"], isbn13: "9789997013246", age: "12+", coverUrl: "" }
+  const languageButtons = ["All", "English", "Spanish", "Arabic", "Haitian Creole", "French", "Portuguese"];
+  const ageButtons = [
+    { label: "All Ages", min: 0, max: 200 },
+    { label: "0-4", min: 0, max: 4 },
+    { label: "5-9", min: 5, max: 9 },
+    { label: "10-14", min: 10, max: 14 },
+    { label: "15+", min: 15, max: 200 }
   ];
 
-  const languageButtons = ["All", "English", "Spanish", "Arabic", "Haitian Creole", "French", "Portuguese"];
-  const ageButtons = ["0+", "3+", "7+", "12+"];
-
   let selectedLang = "All";
-  let selectedAge = "12+";
+  let selectedAgeLabel = "All Ages";
+  let books = [];
 
   const langbar = document.getElementById("langbar");
   const agebar = document.getElementById("agebar");
   const grid = document.getElementById("grid");
   const search = document.getElementById("search");
   const instructions = document.getElementById("instructions");
+  const status = document.getElementById("status");
 
-  function ageToNum(a) {
-    return parseInt(String(a).replace("+", ""), 10);
+  function clean(value) {
+    return value == null ? "" : String(value).trim();
   }
 
-  function amazonLinkFromISBN(isbn13) {
-    return `https://www.amazon.com/s?k=${encodeURIComponent(isbn13)}`;
+  function normalizeLanguage(value) {
+    const v = clean(value)
+      .replace(/Haitin/gi, "Haitian")
+      .replace(/Haitian Kreyol/gi, "Haitian Creole")
+      .replace(/Kreyol/gi, "Creole");
+    return v;
+  }
+
+  function normalizeISBN(value) {
+    return clean(value).replace(/[^0-9Xx]/g, "");
+  }
+
+  function parseAgeRange(text) {
+    const s = clean(text);
+    const rangeMatch = s.match(/(\d+)\s*-\s*(\d+)/);
+    if (rangeMatch) {
+      return {
+        minAge: Number(rangeMatch[1]),
+        maxAge: Number(rangeMatch[2]),
+        agesText: `Ages ${rangeMatch[1]}-${rangeMatch[2]}`
+      };
+    }
+
+    const plusMatch = s.match(/(\d+)\s*\+/);
+    if (plusMatch) {
+      return {
+        minAge: Number(plusMatch[1]),
+        maxAge: 99,
+        agesText: `Ages ${plusMatch[1]}+`
+      };
+    }
+
+    return {
+      minAge: 0,
+      maxAge: 99,
+      agesText: "Age not listed"
+    };
+  }
+
+  function fallbackDescription(title, languages) {
+    const t = title.toLowerCase();
+
+    const rules = [
+      [["wimpy kid", "rodrick"], "A humorous school-and-family story told through the eyes of a kid navigating growing up."],
+      [["harry potter"], "A young wizard discovers a hidden world of magic, friendship, and danger on his first big adventure."],
+      [["percy jackson"], "A fast-paced fantasy adventure where a young hero discovers secrets about his identity and the gods."],
+      [["hunger games", "juegos del hambre"], "A high-stakes dystopian story about survival, courage, and standing up against injustice."],
+      [["divergente"], "A futuristic adventure about identity, choices, and bravery in a divided society."],
+      [["hobbit"], "A fantasy quest full of unlikely courage, dangerous journeys, and unforgettable characters."],
+      [["rainbow fish", "pez arcoíris"], "A gentle story about friendship and learning that sharing with others brings joy."],
+      [["cat in the hat"], "A playful rhyming story where an unexpected visitor turns an ordinary day into a wild adventure."],
+      [["nelly’s box", "nelly's box"], "A warm family story about curiosity, feelings, and the surprises that can come from a special box."],
+      [["summer with grandpa"], "A tender family story about spending meaningful time with a grandparent and making memories together."],
+      [["lili,"], "A simple bilingual family story following Lili through everyday experiences and new discoveries."],
+      [["learn", "learning library", "my first"], "An early learning book that helps children build vocabulary and basic concepts in a fun way."],
+      [["very hungry caterpillar", "oruga muy hambrienta"], "A classic early-reader story about growth, counting, and transformation."],
+      [["brown bear", "oso pardo"], "A rhythmic, repetitive story that helps children practice colors, animals, and prediction."],
+      [["madeline"], "A classic story featuring a brave young girl whose small adventures leave a big impression."],
+      [["abuela"], "A loving story about imagination, family connection, and seeing the world through a child’s eyes."],
+      [["secret gate", "house on the cliff", "tower treasure", "murder on the links"], "A mystery adventure filled with clues, suspense, and problem-solving."],
+      [["seeds in a dark fruit sky"], "A collection of short stories that opens a window into Haitian life, memory, and culture."],
+      [["sadiq"], "A chapter-book story about friendship, school, and everyday adventures."],
+      [["jet the cat"], "A playful bilingual story with a curious animal character that helps children build language through repetition."],
+      [["not for mimi"], "A fun story about a curious little cat learning what is and is not meant for her."],
+      [["mwen reve", "i dream too"], "An encouraging story that invites children to dream big and believe in their future."]
+    ];
+
+    for (const [keys, description] of rules) {
+      if (keys.some(k => t.includes(k))) return description;
+    }
+
+    if (languages.includes("Arabic")) return "A book for Arabic-speaking readers that supports language growth, reading practice, and connection to story.";
+    if (languages.includes("Spanish")) return "A Spanish-language or bilingual title that helps readers build vocabulary, fluency, and confidence through story.";
+    if (languages.includes("Haitian Creole")) return "A Haitian Creole or bilingual title that supports reading development while honoring home language and culture.";
+    if (languages.includes("French")) return "A French-language title that gives readers a chance to enjoy story while building language confidence.";
+    if (languages.includes("Portuguese")) return "A Portuguese-language or bilingual title that supports literacy and enjoyment through familiar themes.";
+    return "A family-friendly book that supports literacy, language growth, and enjoyment through reading.";
+  }
+
+  function parseCSVLine(line) {
+    const result = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      const next = line[i + 1];
+
+      if (char === '"' && inQuotes && next === '"') {
+        current += '"';
+        i++;
+      } else if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+
+    result.push(current);
+    return result;
+  }
+
+  function parseCSV(text) {
+    const lines = text.replace(/\r/g, "").split("\n").filter(line => line.trim() !== "");
+    if (!lines.length) return [];
+
+    const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+
+    return lines.slice(1).map(line => {
+      const values = parseCSVLine(line);
+      const row = {};
+      headers.forEach((header, i) => {
+        row[header] = values[i] ?? "";
+      });
+      return row;
+    });
+  }
+
+  function rowToBook(row) {
+    const title =
+      clean(row.title) ||
+      clean(row.book) ||
+      clean(row["book title"]) ||
+      clean(row.name);
+
+    if (!title) return null;
+
+    const lang1 = normalizeLanguage(row.lang1 || row.language1 || row.language || row.lang || "");
+    const lang2 = normalizeLanguage(row.lang2 || row.language2 || "");
+    const languages = [lang1, lang2].filter(Boolean);
+
+    const isbn13 = normalizeISBN(row.isbn13 || row.isbn || row["isbn-13"] || "");
+    const buyUrl = clean(row.productlink || row["product link"] || row.amazonurl || row.amazon || row.link) ||
+      (isbn13 ? `https://www.amazon.com/s?k=${isbn13}` : "#");
+
+    const ageRaw = clean(row.age || row.ages || row.agerange || row["age range"] || row.notes || row.note);
+    const ageInfo = parseAgeRange(ageRaw);
+
+    const description =
+      clean(row.description) ||
+      clean(row.desc) ||
+      fallbackDescription(title, languages);
+
+    return {
+      title,
+      languages,
+      isbn13,
+      buyUrl,
+      agesText: ageInfo.agesText,
+      minAge: ageInfo.minAge,
+      maxAge: ageInfo.maxAge,
+      description,
+      coverUrl: clean(row.coverurl || row["cover url"])
+    };
   }
 
   function openLibraryCover(isbn13) {
@@ -215,6 +386,7 @@
 
   async function googleBooksCover(isbn13) {
     try {
+      if (!isbn13) return null;
       const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn13)}`;
       const res = await fetch(url);
       const data = await res.json();
@@ -256,6 +428,11 @@
   }
 
   function tryOpenLibrary(img, book) {
+    if (!book.isbn13) {
+      img.src = placeholderCover(book.title);
+      return;
+    }
+
     const ol = openLibraryCover(book.isbn13);
     const testImg = new Image();
 
@@ -279,20 +456,20 @@
 
   function buildLanguageButtons() {
     langbar.innerHTML = "";
-    languageButtons.forEach(l => {
+    languageButtons.forEach((lang) => {
       const btn = document.createElement("button");
-      btn.className = "btn" + (l === selectedLang ? " active" : "");
+      btn.className = "btn" + (lang === selectedLang ? " active" : "");
       btn.type = "button";
       btn.textContent =
-        l === "All" ? "All" :
-        l === "Spanish" ? "Español" :
-        l === "Arabic" ? "العربية" :
-        l === "Haitian Creole" ? "Kreyòl" :
-        l === "French" ? "Français" :
-        l === "Portuguese" ? "Português" : l;
+        lang === "All" ? "All Languages" :
+        lang === "Spanish" ? "Español" :
+        lang === "Arabic" ? "العربية" :
+        lang === "Haitian Creole" ? "Kreyòl" :
+        lang === "French" ? "Français" :
+        lang === "Portuguese" ? "Português" : lang;
 
       btn.addEventListener("click", () => {
-        selectedLang = l;
+        selectedLang = lang;
         buildLanguageButtons();
         renderInstructions();
         render();
@@ -304,14 +481,14 @@
 
   function buildAgeButtons() {
     agebar.innerHTML = "";
-    ageButtons.forEach(a => {
+    ageButtons.forEach((age) => {
       const btn = document.createElement("button");
-      btn.className = "btn" + (a === selectedAge ? " active" : "");
+      btn.className = "btn" + (age.label === selectedAgeLabel ? " active" : "");
       btn.type = "button";
-      btn.textContent = a;
+      btn.textContent = age.label;
 
       btn.addEventListener("click", () => {
-        selectedAge = a;
+        selectedAgeLabel = age.label;
         buildAgeButtons();
         render();
       });
@@ -320,15 +497,19 @@
     });
   }
 
+  function bookMatchesAge(book, ageChoice) {
+    if (ageChoice.label === "All Ages") return true;
+    return !(book.maxAge < ageChoice.min || book.minAge > ageChoice.max);
+  }
+
   function render() {
     const q = search.value.trim().toLowerCase();
-    const selectedAgeNum = ageToNum(selectedAge);
+    const selectedAge = ageButtons.find((a) => a.label === selectedAgeLabel);
 
-    const filtered = books.filter(b => {
-      const matchesLang = selectedLang === "All" || (b.languages || []).includes(selectedLang);
-      const bookMin = ageToNum(b.age || "0+");
-      const matchesAge = bookMin <= selectedAgeNum;
-      const hay = `${b.title} ${(b.languages || []).join(" ")} ${b.isbn13} ${b.age}`.toLowerCase();
+    const filtered = books.filter((book) => {
+      const matchesLang = selectedLang === "All" || (book.languages || []).includes(selectedLang);
+      const matchesAge = bookMatchesAge(book, selectedAge);
+      const hay = `${book.title} ${(book.languages || []).join(" ")} ${book.isbn13 || ""} ${book.description || ""} ${book.agesText || ""}`.toLowerCase();
       const matchesQ = !q || hay.includes(q);
       return matchesLang && matchesAge && matchesQ;
     });
@@ -336,36 +517,39 @@
     grid.innerHTML = "";
 
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="card"><div class="cardbody">No matches. Try a different search, language, or age.</div></div>`;
+      grid.innerHTML = `<div class="error">No matches. Try a different language, age range, or search.</div>`;
       return;
     }
 
-    filtered.forEach(b => {
-      const pairLabel = (b.languages || []).join(" + ");
-      const link = amazonLinkFromISBN(b.isbn13);
-
+    filtered.forEach((book) => {
       const card = document.createElement("div");
       card.className = "card";
 
       const img = document.createElement("img");
       img.className = "cover";
-      img.alt = `Cover of ${b.title}`;
+      img.alt = `Cover of ${book.title}`;
       img.loading = "lazy";
       img.style.cursor = "pointer";
-      img.src = placeholderCover(b.title);
-      img.addEventListener("click", () => window.open(link, "_blank", "noopener,noreferrer"));
+      img.src = placeholderCover(book.title);
 
-      loadBestCover(img, b);
+      if (book.buyUrl && book.buyUrl !== "#") {
+        img.addEventListener("click", () => window.open(book.buyUrl, "_blank", "noopener,noreferrer"));
+      }
+
+      loadBestCover(img, book);
 
       const body = document.createElement("div");
       body.className = "cardbody";
       body.innerHTML = `
-        <div class="pair">${pairLabel || "Language"}</div>
-        <div class="agepill">Ages ${b.age || "0+"}</div>
-        <div class="title">${b.title}</div>
-        <div class="meta">ISBN-13: ${b.isbn13}</div>
+        <div class="tagrow">
+          <div class="pair">${(book.languages || []).join(" + ") || "Language"}</div>
+          <div class="agepill">${book.agesText || "Age not listed"}</div>
+        </div>
+        <div class="title">${book.title}</div>
+        <div class="desc">${book.description || ""}</div>
+        <div class="meta">${book.isbn13 ? "ISBN-13: " + book.isbn13 : "ISBN not listed"}</div>
         <div class="btnrow">
-          <a class="linkbtn primary" href="${link}" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+          <a class="linkbtn primary" href="${book.buyUrl || "#"}" target="_blank" rel="noopener noreferrer">Shop This Book</a>
         </div>
       `;
 
@@ -375,12 +559,34 @@
     });
   }
 
+  async function loadBooksFromSheet() {
+    status.innerHTML = `<div class="loading">Loading books from your Google Sheet…</div>`;
+
+    try {
+      const res = await fetch(SHEET_CSV_URL);
+      if (!res.ok) throw new Error("Could not load the published CSV.");
+      const text = await res.text();
+      const rows = parseCSV(text);
+      books = rows.map(rowToBook).filter(Boolean);
+
+      status.innerHTML = "";
+      render();
+    } catch (err) {
+      status.innerHTML = `
+        <div class="error">
+          I couldn’t load the Google Sheet. Make sure the sheet is published to the web as CSV, and that the <code>SHEET_CSV_URL</code> is correct.
+        </div>
+      `;
+      grid.innerHTML = "";
+    }
+  }
+
   document.getElementById("year").textContent = new Date().getFullYear();
   buildLanguageButtons();
   buildAgeButtons();
   renderInstructions();
   search.addEventListener("input", render);
-  render();
+  loadBooksFromSheet();
 </script>
 </body>
 </html>
